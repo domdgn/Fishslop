@@ -1,0 +1,4 @@
+repository "Fishslop/Fishslop@5773862889752@cloud"
+  path "/"
+    br "/main"
+    co "/main"
