@@ -1,86 +1,190 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using Steamworks;
+using System.Collections;
 
-/*
-	Documentation: https://mirror-networking.gitbook.io/docs/guides/networkbehaviour
-	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkBehaviour.html
-*/
-
-public class SteamLobby : NetworkBehaviour
+namespace FishSlop
 {
-    #region Unity Callbacks
-
-    /// <summary>
-    /// Add your validation code here after the base.OnValidate(); call.
-    /// </summary>
-    protected override void OnValidate()
+    public class SteamLobby : MonoBehaviour
     {
-        base.OnValidate();
+        public static SteamLobby Instance { get; private set; }
+        public GameObject hostButton = null;
+        public ulong lobbyID;
+        public NetworkManager networkManager;
+        public PanelSwapper panelSwapper;
+
+        protected Callback<LobbyCreated_t> lobbyCreated;
+        protected Callback<GameLobbyJoinRequested_t> gameLobbyJoinRequested;
+        protected Callback<LobbyEnter_t> lobbyEntered;
+        protected Callback<LobbyChatUpdate_t> lobbyChatUpdate;
+
+        private const string HostAddressKey = "HostAddress";
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                Instance = this;
+            }
+        }
+
+        private void Start()
+        {
+            networkManager = GetComponent<NetworkManager>();
+            if (!SteamManager.Initialized)
+            {
+                Debug.LogWarning("SteamManager reports NOT initialized. That is NOT a docking station. Attempting manual override...");
+                try
+                {
+                    bool success = SteamAPI.Init();
+                    Debug.Log($"Manual SteamAPI.Init fallback result: {success}");
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"Hard crash trying to run SteamAPI.Init: {e.Message}");
+                }
+            }
+            else
+            {
+                Debug.Log("Steam successfully initialized on Start!");
+            }
+
+            panelSwapper.gameObject.SetActive(true);
+            lobbyCreated = Callback<LobbyCreated_t>.Create(OnLobbyCreated);
+            lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+            gameLobbyJoinRequested = Callback<GameLobbyJoinRequested_t>.Create(OnGameLobbyJoinRequested);
+            lobbyChatUpdate = Callback<LobbyChatUpdate_t>.Create(OnLobbyChatUpdate);
+        }
+
+        public void HostLobby()
+        {
+            SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, networkManager.maxConnections);
+        }
+
+        void OnLobbyCreated(LobbyCreated_t callback)
+        {
+            if (!SteamManager.Initialized)
+            {
+                Debug.LogError("Cannot host: Steam API is not running!");
+                return;
+            }
+
+            if (callback.m_eResult != EResult.k_EResultOK)
+            {
+                Debug.LogError("Failed to create lobby: " + callback.m_eResult);
+                return;
+            }
+
+            Debug.Log("Lobby created successfully!" + callback.m_ulSteamIDLobby);
+            networkManager.StartHost();
+
+            SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey, SteamUser.GetSteamID().ToString());
+            lobbyID = callback.m_ulSteamIDLobby;
+        }
+
+        void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
+        {
+            Debug.Log("Join request received for lobby: " + callback.m_steamIDLobby);
+            
+            if (NetworkClient.isConnected || NetworkClient.active)
+            {
+                Debug.LogWarning("Already connected to a lobby. Disconnecting first.");
+                NetworkManager.singleton.StopClient();
+                NetworkClient.Shutdown();
+            }
+
+            SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
+        }
+
+        void OnLobbyEntered(LobbyEnter_t callback)
+        {
+            if (NetworkServer.active)
+            {
+                Debug.Log("Already in lobby as host. Ignoring join request.");
+                return;
+            }
+
+            lobbyID = callback.m_ulSteamIDLobby;
+            string hostAddress = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), HostAddressKey);
+            networkManager.networkAddress = hostAddress;
+
+            networkManager.StartClient();
+            panelSwapper.SwapUIPanel("Lobby");
+        }
+
+        void OnLobbyChatUpdate(LobbyChatUpdate_t callback)
+        {
+            if (callback.m_ulSteamIDLobby != lobbyID) { return; }
+
+            EChatMemberStateChange stateChange = (EChatMemberStateChange)callback.m_rgfChatMemberStateChange;
+            Debug.Log($"LobbyChatUpdate: {stateChange} for user {callback.m_ulSteamIDUserChanged}");
+
+            bool shouldUpdate = stateChange.HasFlag(EChatMemberStateChange.k_EChatMemberStateChangeEntered) ||
+                                stateChange.HasFlag(EChatMemberStateChange.k_EChatMemberStateChangeLeft) ||
+                                stateChange.HasFlag(EChatMemberStateChange.k_EChatMemberStateChangeDisconnected) ||
+                                stateChange.HasFlag(EChatMemberStateChange.k_EChatMemberStateChangeKicked) ||
+                                stateChange.HasFlag(EChatMemberStateChange.k_EChatMemberStateChangeBanned);
+
+            if (shouldUpdate)
+            {
+                StartCoroutine(DelayedNameUpdate(0.5f));
+                LobbyUIManager.Instance?.CheckAllPlayersReady();
+            }
+        }
+
+        private IEnumerator DelayedNameUpdate(float delay)
+        {
+            if (LobbyUIManager.Instance == null)
+            {
+                Debug.LogWarning("LobbyUIManager instance is null. Cannot update player lobby UI.");
+                yield break;
+            }
+
+            yield return new WaitForSeconds(delay);
+            LobbyUIManager.Instance?.UpdatePlayerLobbyUI();
+        }
+
+        public void LeaveLobby()
+        {
+            CSteamID currentOwner = SteamMatchmaking.GetLobbyOwner(new CSteamID(lobbyID));
+            CSteamID local = SteamUser.GetSteamID();
+            
+            var lobby = new CSteamID(lobbyID);
+            List<CSteamID> members = new List<CSteamID>();
+
+            int count = SteamMatchmaking.GetNumLobbyMembers(lobby);
+
+            for (int i = 0; i < count; i++)
+            {
+                members.Add(SteamMatchmaking.GetLobbyMemberByIndex(lobby, i));
+            }
+
+            if (lobbyID != 0)
+            {
+                SteamMatchmaking.LeaveLobby(new CSteamID(lobbyID));
+                Debug.Log("Left lobby");
+                lobbyID = 0;
+            }
+            else
+            {
+                Debug.LogWarning("Not in a lobby to leave.");
+            }
+
+            if (NetworkServer.active && currentOwner == local)
+            {
+                networkManager.StopHost();
+            }
+            else if (NetworkClient.isConnected)
+            {
+                networkManager.StopClient();
+            }
+
+            panelSwapper.gameObject.SetActive(true);
+            this.gameObject.SetActive(true);
+        }
     }
-
-    // NOTE: Do not put objects in DontDestroyOnLoad (DDOL) in Awake.  You can do that in Start instead.
-    void Awake()
-    {
-    }
-
-    void Start()
-    {
-    }
-
-    #endregion
-
-    #region Start & Stop Callbacks
-
-    /// <summary>
-    /// This is invoked for NetworkBehaviour objects when they become active on the server.
-    /// <para>This could be triggered by NetworkServer.Listen() for objects in the scene, or by NetworkServer.Spawn() for objects that are dynamically created.</para>
-    /// <para>This will be called for objects on a "host" as well as for object on a dedicated server.</para>
-    /// </summary>
-    public override void OnStartServer() { }
-
-    /// <summary>
-    /// Invoked on the server when the object is unspawned
-    /// <para>Useful for saving object data in persistent storage</para>
-    /// </summary>
-    public override void OnStopServer() { }
-
-    /// <summary>
-    /// Called on every NetworkBehaviour when it is activated on a client.
-    /// <para>Objects on the host have this function called, as there is a local client on the host. The values of SyncVars on object are guaranteed to be initialized correctly with the latest state from the server when this function is called on the client.</para>
-    /// </summary>
-    public override void OnStartClient() { }
-
-    /// <summary>
-    /// This is invoked on clients when the server has caused this object to be destroyed.
-    /// <para>This can be used as a hook to invoke effects or do client specific cleanup.</para>
-    /// </summary>
-    public override void OnStopClient() { }
-
-    /// <summary>
-    /// Called when the local player object has been set up.
-    /// <para>This happens after OnStartClient(), as it is triggered by an ownership message from the server. This is an appropriate place to activate components or functionality that should only be active for the local player, such as cameras and input.</para>
-    /// </summary>
-    public override void OnStartLocalPlayer() { }
-
-    /// <summary>
-    /// Called when the local player object is being stopped.
-    /// <para>This happens before OnStopClient(), as it may be triggered by an ownership message from the server, or because the player object is being destroyed. This is an appropriate place to deactivate components or functionality that should only be active for the local player, such as cameras and input.</para>
-    /// </summary>
-    public override void OnStopLocalPlayer() {}
-
-    /// <summary>
-    /// This is invoked on behaviours that have authority, based on context and <see cref="NetworkIdentity.hasAuthority">NetworkIdentity.hasAuthority</see>.
-    /// <para>This is called after <see cref="OnStartServer">OnStartServer</see> and before <see cref="OnStartClient">OnStartClient.</see></para>
-    /// <para>When <see cref="NetworkIdentity.AssignClientAuthority">AssignClientAuthority</see> is called on the server, this will be called on the client that owns the object. When an object is spawned with <see cref="NetworkServer.Spawn">NetworkServer.Spawn</see> with a NetworkConnectionToClient parameter included, this will be called on the client that owns the object.</para>
-    /// </summary>
-    public override void OnStartAuthority() { }
-
-    /// <summary>
-    /// This is invoked on behaviours when authority is removed.
-    /// <para>When NetworkIdentity.RemoveClientAuthority is called on the server, this will be called on the client that owns the object.</para>
-    /// </summary>
-    public override void OnStopAuthority() { }
-
-    #endregion
 }
