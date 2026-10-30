@@ -73,6 +73,8 @@ namespace FishSlop
                 string playerName = SteamFriends.GetFriendPersonaName(member);
                 playerNameTexts[j].text = playerName;
                 j++;
+                CheckAllPlayersReady();
+                Debug.Log($"Updated player list UI. Player {j}: {playerName}");
             }
         }
 
@@ -80,7 +82,7 @@ namespace FishSlop
         {
             if (NetworkServer.active)
             {
-                NetworkManager.singleton.ServerChangeScene("GameScene");
+                NewNetworkManager.singleton.ServerChangeScene("GameScene");
             }
         }
 
@@ -98,7 +100,7 @@ namespace FishSlop
                 if (!player.isReady)
                 {
                     RpcSetPlayButtonInteractable(false);
-                    break;
+                    return;
                 }
             }
             RpcSetPlayButtonInteractable(true);
@@ -108,6 +110,7 @@ namespace FishSlop
         void RpcSetPlayButtonInteractable(bool truthStatus)
         {
             startButton.interactable = truthStatus;
+            Debug.Log($"Set start button interactable to {truthStatus}");
         }
 
         private IEnumerator RetryListUpdate()
