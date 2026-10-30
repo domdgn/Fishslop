@@ -134,11 +134,13 @@ namespace FishSlop
         {
             if (jumpPressed && IsGrounded())
             {
+                Debug.Log("Jumping");
                 Vector3 vel = rb.linearVelocity;
                 vel.y = 0f;
                 rb.linearVelocity = vel;
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
+            jumpAction.Reset();
         }
 
         private bool IsGrounded()
