@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 /*
 	Documentation: https://mirror-networking.gitbook.io/docs/guides/networkbehaviour
@@ -96,7 +97,17 @@ namespace FishSlop
         {
             moveInput = moveAction.ReadValue<Vector2>();
             lookInput = lookAction.ReadValue<Vector2>();
-            jumpPressed = jumpAction.triggered;
+            if (jumpAction.triggered)
+            {
+                StartCoroutine(DelayedJumpReset());
+            }
+        }
+
+        private IEnumerator DelayedJumpReset()
+        {
+            jumpPressed = true;
+            yield return new WaitForFixedUpdate();
+            jumpPressed = false;
         }
 
         private void HandleLook()
@@ -132,6 +143,7 @@ namespace FishSlop
 
         private void HandleJump()
         {
+            Debug.Log($"Jump Pressed: {jumpPressed}, Is Grounded: {IsGrounded()}");
             if (jumpPressed && IsGrounded())
             {
                 Debug.Log("Jumping");
@@ -139,8 +151,8 @@ namespace FishSlop
                 vel.y = 0f;
                 rb.linearVelocity = vel;
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                jumpPressed = false;
             }
-            jumpAction.Reset();
         }
 
         private bool IsGrounded()
