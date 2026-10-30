@@ -20,6 +20,7 @@ namespace FishSlop
         [SerializeField] private float jumpForce = 6f;
 
         [SerializeField] private Transform cameraPivot;
+        [SerializeField] private Transform headPivot;
         [SerializeField] private float lookSens = 0.2f;
         [SerializeField] private float maxLookY = 80f;
 
@@ -119,6 +120,11 @@ namespace FishSlop
             if (cameraPivot != null)
             {
                 cameraPivot.localEulerAngles = new Vector3(pitch, 0f, 0f);
+            }
+
+            if (headPivot != null)
+            {
+                headPivot.localEulerAngles = new Vector3(pitch, 0f, 0f);
             }
         }
 
