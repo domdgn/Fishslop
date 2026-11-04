@@ -51,13 +51,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _Angle: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _amplitude: 1
-    - _frequency: -0.2
+    - _amplitude: 2.22
+    - _frequency: 0.2
     - _speed: 1
+    - _steepness: 0.43
+    - _wavelength: 12.78
     m_Colors:
     - _Base_Color: {r: 0.57169807, g: 0.650552, b: 1, a: 1}
+    - _Direction: {r: 1, g: 1, b: 0, a: 0}
+    - _Wave_A: {r: 0.5, g: 4, b: 0, a: 0}
+    - _Wave_A_steep_wl_ang: {r: 0.38, g: 1.5, b: 18.98, a: 0}
+    - _Wave_B: {r: 0.1, g: 10, b: 34.7, a: 0}
+    - _Wave_C: {r: 0.19, g: 3, b: 36.69, a: 0}
     - _direction: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
