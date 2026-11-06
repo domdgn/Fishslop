@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8717774489638651438}
   - component: {fileID: 7906880101914807487}
   - component: {fileID: 1639952658001065832}
+  - component: {fileID: 6901166284811416398}
   m_Layer: 7
   m_Name: Ship
   m_TagString: Untagged
@@ -53,8 +54,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipMovement
   topSpeed: 5
-  acceleration: 1
-  steerSpeed: 10
+  acceleration: 0.3
+  steerSpeed: 3
 --- !u!64 &8717774489638651438
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -106,6 +107,40 @@ MonoBehaviour:
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &6901166284811416398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2899023865215933293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror.Components::Mirror.NetworkTransformReliable
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  target: {fileID: 4277371151435685430}
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  onlySyncOnChange: 1
+  compressRotation: 1
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 1
+  coordinateSpace: 0
+  timelineOffset: 1
+  showGizmos: 1
+  showOverlay: 1
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  onlySyncOnChangeCorrectionMultiplier: 2
+  useFixedUpdate: 0
+  rotationSensitivity: 0.01
+  positionPrecision: 0.01
+  scalePrecision: 0.01
 --- !u!1001 &895925497174352152
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -537,7 +572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 196292504995798905, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.763334
+      value: 16.71
       objectReference: {fileID: 0}
     - target: {fileID: 3817772853198578704, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
       propertyPath: m_LocalScale.x
@@ -673,7 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Mirror.Components::Mirror.NetworkTransformReliable
   syncDirection: 0
   syncMode: 0
-  syncInterval: 0
+  syncInterval: 0.1
   target: {fileID: 8852495328493534508}
   syncPosition: 1
   syncRotation: 1
@@ -715,10 +750,10 @@ MonoBehaviour:
   syncInterval: 0
   openPos: {x: 0, y: 1.43, z: -1.08}
   openScale: {x: 1, y: 1, z: 1}
-  closedPos: {x: 0, y: 15.76333, z: -1.08}
+  closedPos: {x: 0, y: 16.71, z: -1.08}
   closedScale: {x: 1, y: 0.15, z: 1}
   isOpen: 0
-  lerpSpeed: 15
+  lerpSpeed: 1
 --- !u!4 &8852495328493534508 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3817772853198578704, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}

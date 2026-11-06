@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,12 @@ public class ShipMovement : MonoBehaviour
     private float currentSpeed = 0f;
 
     private SailHandler sailHandler;
+
+    private float steerInput;
+    public void SetSteerInput(float direction)
+    {
+        steerInput = Mathf.Clamp(direction, -1f, 1f);
+    }
 
     private void Start()
     {
@@ -32,6 +39,11 @@ public class ShipMovement : MonoBehaviour
         }
 
         transform.Translate(Vector3.back * currentSpeed * Time.deltaTime);
+
+        if (NetworkServer.active)
+        {
+            Steer(steerInput);
+        }
     }
 
     private void Accelerate()
@@ -60,9 +72,8 @@ public class ShipMovement : MonoBehaviour
 
     public void Steer(float direction)
     {
-        if (currentSpeed > 0)
-        {
-            transform.Rotate(Vector3.up, direction * steerSpeed * (currentSpeed/topSpeed) * Time.deltaTime);
-        }
+        if (!NetworkServer.active || currentSpeed <= 0) return;
+
+        transform.Rotate(Vector3.up, direction * steerSpeed * (currentSpeed / topSpeed) * Time.fixedDeltaTime);
     }
 }

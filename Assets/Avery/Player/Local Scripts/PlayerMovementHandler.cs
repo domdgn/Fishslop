@@ -28,6 +28,8 @@ namespace FishSlop
         [SerializeField] private float groundRadius = 0.2f;
         [SerializeField] private LayerMask groundMask;
 
+        [SerializeField] private float shipCarrySmoothTime = 0.08f;
+
         private Rigidbody rb;
         private PlayerInput playerInput;
 
@@ -45,6 +47,9 @@ namespace FishSlop
 
         private Vector3 lastShipPosition;
         private Quaternion lastShipRotation;
+
+        private Vector3 smoothedShipVelocity;
+        private Vector3 shipVelocitySmoothRef;
 
         public GameObject boop;
         private void Awake()
@@ -183,22 +188,22 @@ namespace FishSlop
 
         private void FixedUpdate()
         {
-            if (!isOwned) { return; }
+            if (!isOwned) return;
 
-            ApplyShipMovement();
+            Vector3 shipVelocity = ApplyShipMovement();
 
             rb.MoveRotation(Quaternion.Euler(0f, yaw, 0f));
 
-            HandleMovement();
+            HandleMovement(shipVelocity);
             HandleJump();
         }
 
-        private void HandleMovement()
+        private void HandleMovement(Vector3 shipVelocity)
         {
             Vector3 moveDir = transform.right * moveInput.x + transform.forward * moveInput.y;
             float speed = isSprinting ? sprintSpeed : moveSpeed;
-            Vector3 velocity = moveDir * speed;
-            velocity.y = rb.linearVelocity.y;
+            Vector3 velocity = moveDir * speed + shipVelocity;
+            velocity.y += rb.linearVelocity.y;
             rb.linearVelocity = velocity;
         }
 
@@ -241,16 +246,17 @@ namespace FishSlop
             }
         }
 
-        private void ApplyShipMovement()
+        private Vector3 ApplyShipMovement()
         {
-            if (currentShip == null) return;
+            if (currentShip == null) { smoothedShipVelocity = Vector3.zero; return Vector3.zero; }
 
             Transform shipTransform = currentShip.transform;
 
             Vector3 localPosition = Quaternion.Inverse(lastShipRotation) * (rb.position - lastShipPosition);
 
             Vector3 newPosition = shipTransform.position + shipTransform.rotation * localPosition;
-            rb.position = newPosition;
+
+            Vector3 shipDelta = newPosition - rb.position;
 
             Quaternion deltaRotation = shipTransform.rotation * Quaternion.Inverse(lastShipRotation);
 
@@ -260,6 +266,19 @@ namespace FishSlop
 
             lastShipPosition = shipTransform.position;
             lastShipRotation = shipTransform.rotation;
+
+            Vector3 targetVelocity = shipDelta / Time.fixedDeltaTime;
+
+            smoothedShipVelocity = Vector3.SmoothDamp(
+                smoothedShipVelocity,
+                targetVelocity,
+                ref shipVelocitySmoothRef,
+                shipCarrySmoothTime,
+                Mathf.Infinity,
+                Time.fixedDeltaTime
+            );
+
+            return smoothedShipVelocity;
         }
 
         public void ClearMovementInput()
