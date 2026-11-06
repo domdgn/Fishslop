@@ -1,7 +1,7 @@
 using UnityEngine;
 using Mirror;
 
-public class TestDisplacement : NetworkBehaviour
+public class WaveBobDisplacement : NetworkBehaviour
 {
     private float baseHeight;
 
@@ -10,7 +10,7 @@ public class TestDisplacement : NetworkBehaviour
         baseHeight = transform.position.y;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!isServer) return;
 
