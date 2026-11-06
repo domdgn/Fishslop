@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ShipMovement : MonoBehaviour
 {
     public float topSpeed = 10f;
     public float acceleration = 2f;
+    public float steerSpeed = 20f;
     private float currentSpeed = 0f;
 
     private SailHandler sailHandler;
@@ -53,6 +55,14 @@ public class ShipMovement : MonoBehaviour
             {
                 currentSpeed = 0;
             }
+        }
+    }
+
+    public void Steer(float direction)
+    {
+        if (currentSpeed > 0)
+        {
+            transform.Rotate(Vector3.up, direction * steerSpeed * (currentSpeed/topSpeed) * Time.deltaTime);
         }
     }
 }

@@ -54,6 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipMovement
   topSpeed: 5
   acceleration: 1
+  steerSpeed: 10
 --- !u!64 &8717774489638651438
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -709,6 +710,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec20afde327d5d34fb5897a92ce4b809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SailHandler
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   openPos: {x: 0, y: 1.43, z: -1.08}
   openScale: {x: 1, y: 1, z: 1}
   closedPos: {x: 0, y: 15.76333, z: -1.08}

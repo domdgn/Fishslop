@@ -7,7 +7,7 @@ public class WaveBobDisplacement : NetworkBehaviour
 
     private void Start()
     {
-        baseHeight = transform.position.y;
+        baseHeight = transform.localPosition.y;
     }
 
     private void Update()
@@ -18,8 +18,10 @@ public class WaveBobDisplacement : NetworkBehaviour
         float time = Time.time;
 
         Vector3 displacement = WaterWaves.Instance.GetDisplacement(worldPosition, time);
-        float height = baseHeight + displacement.y;
 
-        transform.position = new Vector3(worldPosition.x, height, worldPosition.z);
+        Vector3 localPosition = transform.localPosition;
+        localPosition.y = baseHeight + displacement.y;
+
+        transform.localPosition = localPosition;
     }
 }

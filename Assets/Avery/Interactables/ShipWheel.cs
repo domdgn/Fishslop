@@ -10,7 +10,19 @@ public class ShipWheel : MonoBehaviour, IInteractable
 
     public void OnInteractStart(Transform interactor)
     {
-        throw new System.NotImplementedException();
+        PlayerSteerShip playerSteerShip = interactor.GetComponent<PlayerSteerShip>();
+        if (playerSteerShip != null)
+        {
+            ShipMovement shipMovement = GetComponentInParent<ShipMovement>();
+            if (shipMovement != null)
+            {
+                playerSteerShip.StartSteeringShip(shipMovement);
+            }
+            else
+            {
+                Debug.LogError("ShipMovement component not found in parent of " + gameObject.name);
+            }
+        }
     }
 
     public void OnLookAt(Transform interactor)

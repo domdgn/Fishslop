@@ -39,15 +39,24 @@ namespace FishSlop
         private float yaw;
         private float pitch;
 
-        private PlayerInteraction playerInteraction;
+        private PlayerInteraction playerInteraction; 
+        private ShipMovement currentShip;
+        private PlayerSteerShip playerSteerShip;
 
+        private Vector3 lastShipPosition;
+        private Quaternion lastShipRotation;
+
+        public GameObject boop;
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
             playerInput = GetComponent<PlayerInput>();
             playerInteraction = GetComponent<PlayerInteraction>();
+            playerSteerShip = GetComponent<PlayerSteerShip>();
 
+            playerSteerShip.enabled = false;
             playerInput.enabled = false;
+            boop.SetActive(true);
 
             if (playerInteraction != null) playerInteraction.enabled = false;
 
@@ -64,6 +73,7 @@ namespace FishSlop
             rb.isKinematic = false;
 
             playerInput.enabled = true;
+            playerSteerShip.enabled = true;
             playerInteraction.enabled = true;
 
             playerInput.SwitchCurrentActionMap("Player");
@@ -73,6 +83,8 @@ namespace FishSlop
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            boop.SetActive(false);
 
             if (cameraPivot != null) 
             { 
@@ -125,7 +137,7 @@ namespace FishSlop
 
         public void OnSprint(InputValue value)
         {
-            Debug.Log($"Sprint callback: {value.isPressed}");
+            //Debug.Log($"Sprint callback: {value.isPressed}");
 
             if (!isActiveAndEnabled || !netIdentity || !isOwned) return;
 
@@ -141,7 +153,7 @@ namespace FishSlop
         public void OnInteract(InputValue value)
         {
             if (!isActiveAndEnabled || !netIdentity || !isOwned || !value.isPressed) return;
-            //Debug.Log("PlayerMovementHandler: OnInteract called.");
+            Debug.Log("PlayerMovementHandler: OnInteract called.");
             playerInteraction?.DoInteract();
         }
 
@@ -173,6 +185,8 @@ namespace FishSlop
         {
             if (!isOwned) { return; }
 
+            ApplyShipMovement();
+
             rb.MoveRotation(Quaternion.Euler(0f, yaw, 0f));
 
             HandleMovement();
@@ -201,6 +215,59 @@ namespace FishSlop
             rb.linearVelocity = velocity;
 
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!isOwned) return;
+
+            ShipMovement ship = other.GetComponentInParent<ShipMovement>();
+
+            if (ship == null) return;
+
+            currentShip = ship;
+
+            lastShipPosition = ship.transform.position;
+            lastShipRotation = ship.transform.rotation;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            ShipMovement ship = other.GetComponentInParent<ShipMovement>();
+
+            if (ship == currentShip)
+            {
+                currentShip = null;
+            }
+        }
+
+        private void ApplyShipMovement()
+        {
+            if (currentShip == null) return;
+
+            Transform shipTransform = currentShip.transform;
+
+            Vector3 localPosition = Quaternion.Inverse(lastShipRotation) * (rb.position - lastShipPosition);
+
+            Vector3 newPosition = shipTransform.position + shipTransform.rotation * localPosition;
+            rb.position = newPosition;
+
+            Quaternion deltaRotation = shipTransform.rotation * Quaternion.Inverse(lastShipRotation);
+
+            Vector3 newForward = deltaRotation * Quaternion.Euler(0f, yaw, 0f) * Vector3.forward;
+
+            yaw = Mathf.Atan2(newForward.x, newForward.z) * Mathf.Rad2Deg;
+
+            lastShipPosition = shipTransform.position;
+            lastShipRotation = shipTransform.rotation;
+        }
+
+        public void ClearMovementInput()
+        {
+            moveInput = Vector2.zero;
+            lookInput = Vector2.zero;
+            jumpPressed = false;
+            isSprinting = false;
         }
 
         private bool IsGrounded()

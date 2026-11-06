@@ -12,11 +12,11 @@ public class ObjectFloat : NetworkBehaviour
     public List<Transform> floatTransforms = new List<Transform>();
     
     private List<Vector3> localOffsets = new List<Vector3>();
-    private Quaternion initialRotation;
+    private Quaternion initialLocalRotation;
 
     void Awake()
     {
-        initialRotation = transform.rotation;
+        initialLocalRotation = transform.localRotation;
 
         foreach (Transform t in floatTransforms)
         {
@@ -48,7 +48,7 @@ public class ObjectFloat : NetworkBehaviour
 
         if (normal.y < 0) normal = -normal;
 
-        Quaternion targetRotation = Quaternion.FromToRotation(initialRotation * Vector3.up, normal) * initialRotation;
+        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, normal) * transform.rotation;
 
         transform.SetPositionAndRotation(centre, targetRotation);
     }
