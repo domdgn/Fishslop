@@ -1,12 +1,16 @@
+using Mirror;
 using UnityEngine;
 
-public class SailHandler : MonoBehaviour
+public class SailHandler : NetworkBehaviour
 {
     public Vector3 openPos;
     public Vector3 openScale;
     public Vector3 closedPos;
     public Vector3 closedScale;
+
+    [SyncVar]
     public bool isOpen = false;
+
     public float lerpSpeed = 5f;
 
     private void Update()
@@ -23,6 +27,7 @@ public class SailHandler : MonoBehaviour
         }
     }
 
+    [Command(requiresAuthority = false)]
     public void ToggleSail()
     {
         isOpen = !isOpen;

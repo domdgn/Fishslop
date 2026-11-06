@@ -110,7 +110,7 @@ namespace FishSlop
         void RpcSetPlayButtonInteractable(bool truthStatus)
         {
             startButton.interactable = truthStatus;
-            Debug.Log($"Set start button interactable to {truthStatus}");
+            //Debug.Log($"Set start button interactable to {truthStatus}");
         }
 
         private IEnumerator RetryListUpdate()

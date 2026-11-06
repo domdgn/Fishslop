@@ -30,25 +30,26 @@ namespace FishSlop
 
         private Rigidbody rb;
         private PlayerInput playerInput;
-        
-        private InputAction moveAction;
-        private InputAction sprintAction;
-        private InputAction jumpAction;
-        private InputAction lookAction;
 
         private Vector2 moveInput;
         private Vector2 lookInput;
         private bool jumpPressed;
+        private bool isSprinting;
 
         private float yaw;
         private float pitch;
+
+        private PlayerInteraction playerInteraction;
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
             playerInput = GetComponent<PlayerInput>();
+            playerInteraction = GetComponent<PlayerInteraction>();
 
             playerInput.enabled = false;
+
+            if (playerInteraction != null) playerInteraction.enabled = false;
 
             rb.freezeRotation = true;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
@@ -63,18 +64,21 @@ namespace FishSlop
             rb.isKinematic = false;
 
             playerInput.enabled = true;
+            playerInteraction.enabled = true;
 
-            moveAction = playerInput.actions.FindAction("Player/Move", true);
-            lookAction = playerInput.actions.FindAction("Player/Look", true);
-            jumpAction = playerInput.actions.FindAction("Player/Jump", true);
-            sprintAction = playerInput.actions.FindAction("Player/Sprint", true);
+            playerInput.SwitchCurrentActionMap("Player");
 
             yaw = transform.eulerAngles.y;
+            pitch = 0f;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            if (cameraPivot != null) { cameraPivot.gameObject.SetActive(true); }
+            if (cameraPivot != null) 
+            { 
+                cameraPivot.gameObject.SetActive(true);
+                playerInteraction.cameraPivot = cameraPivot;
+            }
         }
 
         public override void OnStopAuthority()
@@ -84,24 +88,61 @@ namespace FishSlop
             rb.isKinematic = true;
 
             playerInput.enabled = false;
+            playerInteraction.enabled = false;
             if (cameraPivot != null) { cameraPivot.gameObject.SetActive(false); }
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            moveInput = Vector2.zero;
+            lookInput = Vector2.zero;
+            jumpPressed = false;
+            isSprinting = false;
+
+            gameObject.SetActive(false);
         }
 
         private void Update()
         {
             if (!isOwned) { return; }
-            ReadInput();
+
             HandleLook();
+
+            playerInteraction.DoRaycast();
         }
 
-        private void ReadInput()
+        public void OnMove(InputValue value)
         {
-            moveInput = moveAction.ReadValue<Vector2>();
-            lookInput = lookAction.ReadValue<Vector2>();
-            if (jumpAction.triggered)
-            {
-                StartCoroutine(DelayedJumpReset());
-            }
+            if (!isActiveAndEnabled || !netIdentity || !isOwned) return;
+            moveInput = value.Get<Vector2>();
+        }
+
+        public void OnLook(InputValue value)
+        {
+            if (!isActiveAndEnabled || !netIdentity || !isOwned) return;
+            lookInput = value.Get<Vector2>();
+        }
+
+        public void OnSprint(InputValue value)
+        {
+            Debug.Log($"Sprint callback: {value.isPressed}");
+
+            if (!isActiveAndEnabled || !netIdentity || !isOwned) return;
+
+            isSprinting = value.isPressed;
+        }
+
+        public void OnJump(InputValue value)
+        {
+            if (!isActiveAndEnabled || !netIdentity || !isOwned || !value.isPressed) return;
+            jumpPressed = true;
+        }
+
+        public void OnInteract(InputValue value)
+        {
+            if (!isActiveAndEnabled || !netIdentity || !isOwned || !value.isPressed) return;
+            //Debug.Log("PlayerMovementHandler: OnInteract called.");
+            playerInteraction?.DoInteract();
         }
 
         private IEnumerator DelayedJumpReset()
@@ -141,7 +182,7 @@ namespace FishSlop
         private void HandleMovement()
         {
             Vector3 moveDir = transform.right * moveInput.x + transform.forward * moveInput.y;
-            float speed = sprintAction.IsPressed() ? sprintSpeed : moveSpeed;
+            float speed = isSprinting ? sprintSpeed : moveSpeed;
             Vector3 velocity = moveDir * speed;
             velocity.y = rb.linearVelocity.y;
             rb.linearVelocity = velocity;
@@ -149,16 +190,17 @@ namespace FishSlop
 
         private void HandleJump()
         {
-            Debug.Log($"Jump Pressed: {jumpPressed}, Is Grounded: {IsGrounded()}");
-            if (jumpPressed && IsGrounded())
-            {
-                Debug.Log("Jumping");
-                Vector3 vel = rb.linearVelocity;
-                vel.y = 0f;
-                rb.linearVelocity = vel;
-                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                jumpPressed = false;
-            }
+            if (!jumpPressed) return;
+
+            jumpPressed = false;
+
+            if (!IsGrounded()) return;
+
+            Vector3 velocity = rb.linearVelocity;
+            velocity.y = 0f;
+            rb.linearVelocity = velocity;
+
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
         private bool IsGrounded()
