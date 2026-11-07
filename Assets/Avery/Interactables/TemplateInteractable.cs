@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public class TemplateInteractable : MonoBehaviour, IInteractable
@@ -16,6 +17,18 @@ public class TemplateInteractable : MonoBehaviour, IInteractable
     public void OnLookAt(Transform interactor)
     {
         throw new System.NotImplementedException();
+    }
+
+    public NetworkIdentity GetNetworkIdentity()
+    {
+        NetworkIdentity identity = GetComponentInParent<NetworkIdentity>();
+        if (identity == null)
+        {
+            Debug.LogError("TemplateInteractable does not have a NetworkIdentity component.");
+            return null;
+        }
+        
+        return identity;
     }
 
     public string GetInteractionText()

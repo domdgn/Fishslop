@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public interface IInteractable
@@ -6,5 +7,6 @@ public interface IInteractable
     void OnInteractStart(Transform interactor);
     void OnLookAt(Transform interactor);
 
+    NetworkIdentity GetNetworkIdentity();
     string GetInteractionText();
 }

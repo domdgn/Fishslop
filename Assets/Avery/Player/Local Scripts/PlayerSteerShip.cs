@@ -1,19 +1,20 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Mirror;
-using static UnityEngine.Rendering.DebugUI;
 using FishSlop;
-using Steamworks;
 public class PlayerSteerShip : NetworkBehaviour
 {
-    private ShipMovement shipMovement;
     private PlayerInput playerInput;
     private float steerInput;
-
     private uint shipNetId;
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
+        enabled = false;
+    }
+    public override void OnStartAuthority()
+    {
+        enabled = true;
     }
     public void StartSteeringShip(ShipMovement ship)
     {
@@ -28,35 +29,32 @@ public class PlayerSteerShip : NetworkBehaviour
         }
 
         shipNetId = shipIdentity.netId;
-        shipMovement = ship;
+        steerInput = 0f;
+
         GetComponent<PlayerMovementHandler>().ClearMovementInput();
-        playerInput.SwitchCurrentActionMap("Ship");
+
+        playerInput.actions.FindActionMap("Player").Disable();
+        playerInput.actions.FindActionMap("Ship").Enable();
     }
 
     public void OnStopSteering(InputValue value)
     {
         Debug.Log($"StopSteering callback | Pressed: {value.isPressed} | Map: {playerInput.currentActionMap.name}");
 
-        if (!value.isPressed) return;
-        if (playerInput.currentActionMap.name != "Ship") return;
+        if (!value.isPressed || !isOwned) return;
+        if (playerInput.currentActionMap == null || playerInput.currentActionMap.name != "Ship") return;
 
         CmdSetSteerInput(shipNetId, 0f);
 
-        shipMovement = null;
         shipNetId = 0;
-        playerInput.SwitchCurrentActionMap("Player");
+        steerInput = 0f;
+
+        playerInput.actions.FindActionMap("Player").Enable();
+        playerInput.actions.FindActionMap("Ship").Disable();
     }
-
-    private void Update()
-    {
-        if (!isOwned || shipMovement == null) return;
-
-        shipMovement.Steer(steerInput);
-    }
-
     public void OnSteer(InputValue value)
     {
-        if (!isOwned || shipMovement == null) return;
+        if (!isOwned || shipNetId == 0) return;
 
         steerInput = value.Get<Vector2>().x;
 
@@ -66,12 +64,10 @@ public class PlayerSteerShip : NetworkBehaviour
     [Command]
     private void CmdSetSteerInput(uint targetShipId, float direction)
     {
-        if (!NetworkServer.spawned.TryGetValue(targetShipId, out NetworkIdentity identity))
-            return;
+        if (!NetworkServer.spawned.TryGetValue(targetShipId, out NetworkIdentity identity)) return;
 
         ShipMovement ship = identity.GetComponentInChildren<ShipMovement>(true);
 
-        if (ship != null)
-            ship.SetSteerInput(direction);
+        if (ship != null) ship.SetSteerInput(direction);
     }
 }

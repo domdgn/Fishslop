@@ -1,54 +1,76 @@
+
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Mirror;
 
-public class PlayerInteraction : MonoBehaviour
+namespace FishSlop
 {
-    [SerializeField] private float interactionDistance = 3f;
-    [SerializeField] private LayerMask interactMask;
-    public Transform cameraPivot;
-    private IInteractable lookedAt;
-    public void DoRaycast()
+    public class PlayerInteraction : NetworkBehaviour
     {
-        if (cameraPivot == null) { return; }
-        if (InteractableUIHandler.Instance == null) { Debug.LogWarning("hey no interact UI instance"); return; }
+        [SerializeField] private float interactionDistance = 3f;
+        [SerializeField] private LayerMask interactMask;
 
-        Ray ray = new Ray(cameraPivot.position, cameraPivot.forward);
+        public Transform cameraPivot;
 
-        Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.green);
+        private IInteractable lookedAt;
 
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, interactionDistance, interactMask))
+        private void Update()
         {
-            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
-            if (interactable != null)
-            {
-                lookedAt = interactable;
-                InteractableUIHandler.Instance.ShowInteractableText(interactable.GetInteractionText());
-            }
-            else
-            {
-                lookedAt = null;
-                InteractableUIHandler.Instance.HideInteractableText();
-            }
+            if (!isOwned) return;
+
+            DoRaycast();
         }
-        else
+
+        public void DoRaycast()
         {
+            if (cameraPivot == null) return;
+            if (InteractableUIHandler.Instance == null) return;
+
+            Ray ray = new Ray(cameraPivot.position, cameraPivot.forward);
+
+            Debug.DrawRay(ray.origin, ray.direction * interactionDistance, Color.green);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, interactionDistance, interactMask))
+            {
+                IInteractable interactable = hit.collider.GetComponentInParent<IInteractable>();
+
+                if (interactable != null)
+                {
+                    lookedAt = interactable;
+                    InteractableUIHandler.Instance.ShowInteractableText(interactable.GetInteractionText());
+
+                    return;
+                }
+            }
+
             lookedAt = null;
             InteractableUIHandler.Instance.HideInteractableText();
         }
-    }
 
-    public void DoInteract()
-    {
-        Debug.Log($"PlayerInteraction: DoInteract called. {lookedAt}");
-
-        if (lookedAt != null)
+        public void DoInteract()
         {
-            lookedAt.OnInteractStart(transform);
+            if (!isOwned || lookedAt == null) return;
+
+            NetworkIdentity identity = lookedAt.GetNetworkIdentity();
+
+            if (identity == null) return;
+
+            CmdInteract(identity);
         }
-        else
+
+        [Command]
+        private void CmdInteract(NetworkIdentity target)
         {
-            Debug.Log("No interactable object in range.");
+            if (target == null) return;
+
+            IInteractable interactable = target.GetComponent<IInteractable>();
+
+            if (interactable == null) interactable = target.GetComponentInChildren<IInteractable>();
+
+            if (interactable == null) return;
+
+            if (Vector3.Distance(transform.position, target.transform.position) > interactionDistance + 1f) return;
+
+            interactable.OnInteractStart(transform);
         }
     }
 }

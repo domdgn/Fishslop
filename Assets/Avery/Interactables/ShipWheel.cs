@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public class ShipWheel : MonoBehaviour, IInteractable
@@ -35,9 +36,20 @@ public class ShipWheel : MonoBehaviour, IInteractable
         return interactionText;
     }
 
-    void Start()
+    public NetworkIdentity GetNetworkIdentity()
     {
+        NetworkIdentity identity = GetComponent<NetworkIdentity>();
+        if (identity == null)
+        {
+            identity = GetComponentInParent<NetworkIdentity>();
+        }
+        if (identity == null)
+        {
+            Debug.LogError("TemplateInteractable does not have a NetworkIdentity component.");
+            return null;
+        }
 
+        return identity;
     }
 
     void Update()

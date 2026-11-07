@@ -1,17 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
-using UnityEngine.InputSystem;
-using System.Collections;
 
-/*
-	Documentation: https://mirror-networking.gitbook.io/docs/guides/networkbehaviour
-	API Reference: https://mirror-networking.com/docs/api/Mirror.NetworkBehaviour.html
-*/
-
-namespace FishSlop 
+namespace FishSlop
 {
-    [RequireComponent(typeof(PlayerInput))]
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerMovementHandler : NetworkBehaviour
     {
@@ -19,194 +10,88 @@ namespace FishSlop
         [SerializeField] private float sprintSpeed = 8f;
         [SerializeField] private float jumpForce = 6f;
 
-        [SerializeField] private Transform cameraPivot;
-        [SerializeField] private Transform headPivot;
-        [SerializeField] private float lookSens = 0.2f;
-        [SerializeField] private float maxLookY = 80f;
-
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundRadius = 0.2f;
         [SerializeField] private LayerMask groundMask;
 
-        [SerializeField] private float shipCarrySmoothTime = 0.08f;
-
         private Rigidbody rb;
-        private PlayerInput playerInput;
 
         private Vector2 moveInput;
-        private Vector2 lookInput;
-        private bool jumpPressed;
         private bool isSprinting;
+        private bool jumpPressed;
 
-        private float yaw;
-        private float pitch;
+        private float targetYaw;
 
-        private PlayerInteraction playerInteraction; 
         private ShipMovement currentShip;
-        private PlayerSteerShip playerSteerShip;
-
         private Vector3 lastShipPosition;
         private Quaternion lastShipRotation;
 
-        private Vector3 smoothedShipVelocity;
-        private Vector3 shipVelocitySmoothRef;
-
-        public GameObject boop;
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
-            playerInput = GetComponent<PlayerInput>();
-            playerInteraction = GetComponent<PlayerInteraction>();
-            playerSteerShip = GetComponent<PlayerSteerShip>();
 
-            playerSteerShip.enabled = false;
-            playerInput.enabled = false;
-            boop.SetActive(true);
-
-            if (playerInteraction != null) playerInteraction.enabled = false;
-
+            rb.isKinematic = true;
             rb.freezeRotation = true;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
-            cameraPivot.gameObject.SetActive(false);
-            rb.isKinematic = true;
         }
 
-        public override void OnStartAuthority()
+        public override void OnStartServer()
         {
-            base.OnStartAuthority();
+            base.OnStartServer();
 
             rb.isKinematic = false;
-
-            playerInput.enabled = true;
-            playerSteerShip.enabled = true;
-            playerInteraction.enabled = true;
-
-            playerInput.SwitchCurrentActionMap("Player");
-
-            yaw = transform.eulerAngles.y;
-            pitch = 0f;
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-
-            boop.SetActive(false);
-
-            if (cameraPivot != null) 
-            { 
-                cameraPivot.gameObject.SetActive(true);
-                playerInteraction.cameraPivot = cameraPivot;
-            }
+            targetYaw = transform.eulerAngles.y;
         }
 
-        public override void OnStopAuthority()
+        [Command]
+        public void CmdSetMoveInput(Vector2 input)
         {
-            base.OnStopAuthority();
-
-            rb.isKinematic = true;
-
-            playerInput.enabled = false;
-            playerInteraction.enabled = false;
-            if (cameraPivot != null) { cameraPivot.gameObject.SetActive(false); }
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            moveInput = Vector2.zero;
-            lookInput = Vector2.zero;
-            jumpPressed = false;
-            isSprinting = false;
-
-            gameObject.SetActive(false);
+            moveInput = Vector2.ClampMagnitude(input, 1f);
         }
 
-        private void Update()
+        [Command]
+        public void CmdSetSprint(bool sprinting)
         {
-            if (!isOwned) { return; }
-
-            HandleLook();
-
-            playerInteraction.DoRaycast();
+            isSprinting = sprinting;
         }
 
-        public void OnMove(InputValue value)
-        {
-            if (!isActiveAndEnabled || !netIdentity || !isOwned) return;
-            moveInput = value.Get<Vector2>();
-        }
-
-        public void OnLook(InputValue value)
-        {
-            if (!isActiveAndEnabled || !netIdentity || !isOwned) return;
-            lookInput = value.Get<Vector2>();
-        }
-
-        public void OnSprint(InputValue value)
-        {
-            //Debug.Log($"Sprint callback: {value.isPressed}");
-
-            if (!isActiveAndEnabled || !netIdentity || !isOwned) return;
-
-            isSprinting = value.isPressed;
-        }
-
-        public void OnJump(InputValue value)
-        {
-            if (!isActiveAndEnabled || !netIdentity || !isOwned || !value.isPressed) return;
-            jumpPressed = true;
-        }
-
-        public void OnInteract(InputValue value)
-        {
-            if (!isActiveAndEnabled || !netIdentity || !isOwned || !value.isPressed) return;
-            Debug.Log("PlayerMovementHandler: OnInteract called.");
-            playerInteraction?.DoInteract();
-        }
-
-        private IEnumerator DelayedJumpReset()
+        [Command]
+        public void CmdJump()
         {
             jumpPressed = true;
-            yield return new WaitForFixedUpdate();
-            jumpPressed = false;
         }
 
-        private void HandleLook()
+        [Command]
+        public void CmdSetYaw(float yaw)
         {
-            yaw += lookInput.x * lookSens;
-            pitch -= lookInput.y * lookSens;
-            pitch = Mathf.Clamp(pitch, -maxLookY, maxLookY);
-
-            if (cameraPivot != null)
-            {
-                cameraPivot.localEulerAngles = new Vector3(pitch, 0f, 0f);
-            }
-
-            if (headPivot != null)
-            {
-                headPivot.localEulerAngles = new Vector3(pitch - 90f, 0f, 0f);
-            }
+            targetYaw = yaw;
         }
 
+        [ServerCallback]
         private void FixedUpdate()
         {
-            if (!isOwned) return;
+            ApplyShipMovement();
 
-            Vector3 shipVelocity = ApplyShipMovement();
+            rb.MoveRotation(Quaternion.Euler(0f, targetYaw, 0f));
 
-            rb.MoveRotation(Quaternion.Euler(0f, yaw, 0f));
-
-            HandleMovement(shipVelocity);
+            HandleMovement();
             HandleJump();
         }
 
-        private void HandleMovement(Vector3 shipVelocity)
+        [Server]
+        private void HandleMovement()
         {
-            Vector3 moveDir = transform.right * moveInput.x + transform.forward * moveInput.y;
+            Vector3 moveDirection = Quaternion.Euler(0f, targetYaw, 0f) * new Vector3(moveInput.x, 0f, moveInput.y);
+
             float speed = isSprinting ? sprintSpeed : moveSpeed;
-            Vector3 velocity = moveDir * speed + shipVelocity;
-            velocity.y += rb.linearVelocity.y;
+
+            Vector3 velocity = moveDirection * speed;
+            velocity.y = rb.linearVelocity.y;
+
             rb.linearVelocity = velocity;
         }
 
+        [Server]
         private void HandleJump()
         {
             if (!jumpPressed) return;
@@ -222,73 +107,58 @@ namespace FishSlop
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
+        [Server]
+        private void ApplyShipMovement()
+        {
+            if (currentShip == null) return;
+
+            Transform ship = currentShip.transform;
+
+            Vector3 localPosition = Quaternion.Inverse(lastShipRotation) * (rb.position - lastShipPosition);
+
+            Vector3 newPosition = ship.position + ship.rotation * localPosition;
+
+            Vector3 shipDelta = newPosition - rb.position;
+
+            Quaternion rotationDelta = ship.rotation * Quaternion.Inverse(lastShipRotation);
+
+            targetYaw = (rotationDelta * Quaternion.Euler(0f, targetYaw, 0f)).eulerAngles.y;
+
+            rb.MovePosition(rb.position + shipDelta);
+
+            lastShipPosition = ship.position;
+            lastShipRotation = ship.rotation;
+        }
+
+        [ServerCallback]
         private void OnTriggerEnter(Collider other)
         {
-            if (!isOwned) return;
-
             ShipMovement ship = other.GetComponentInParent<ShipMovement>();
 
             if (ship == null) return;
 
             currentShip = ship;
-
             lastShipPosition = ship.transform.position;
             lastShipRotation = ship.transform.rotation;
         }
 
+        [ServerCallback]
         private void OnTriggerExit(Collider other)
         {
             ShipMovement ship = other.GetComponentInParent<ShipMovement>();
 
-            if (ship == currentShip)
-            {
-                currentShip = null;
-            }
+            if (ship == currentShip) currentShip = null;
         }
 
-        private Vector3 ApplyShipMovement()
-        {
-            if (currentShip == null) { smoothedShipVelocity = Vector3.zero; return Vector3.zero; }
-
-            Transform shipTransform = currentShip.transform;
-
-            Vector3 localPosition = Quaternion.Inverse(lastShipRotation) * (rb.position - lastShipPosition);
-
-            Vector3 newPosition = shipTransform.position + shipTransform.rotation * localPosition;
-
-            Vector3 shipDelta = newPosition - rb.position;
-
-            Quaternion deltaRotation = shipTransform.rotation * Quaternion.Inverse(lastShipRotation);
-
-            Vector3 newForward = deltaRotation * Quaternion.Euler(0f, yaw, 0f) * Vector3.forward;
-
-            yaw = Mathf.Atan2(newForward.x, newForward.z) * Mathf.Rad2Deg;
-
-            lastShipPosition = shipTransform.position;
-            lastShipRotation = shipTransform.rotation;
-
-            Vector3 targetVelocity = shipDelta / Time.fixedDeltaTime;
-
-            smoothedShipVelocity = Vector3.SmoothDamp(
-                smoothedShipVelocity,
-                targetVelocity,
-                ref shipVelocitySmoothRef,
-                shipCarrySmoothTime,
-                Mathf.Infinity,
-                Time.fixedDeltaTime
-            );
-
-            return smoothedShipVelocity;
-        }
-
+        [Server]
         public void ClearMovementInput()
         {
             moveInput = Vector2.zero;
-            lookInput = Vector2.zero;
-            jumpPressed = false;
             isSprinting = false;
+            jumpPressed = false;
         }
 
+        [Server]
         private bool IsGrounded()
         {
             return Physics.CheckSphere(groundCheck.position, groundRadius, groundMask);

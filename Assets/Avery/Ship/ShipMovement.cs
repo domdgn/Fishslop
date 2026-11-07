@@ -2,7 +2,7 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class ShipMovement : MonoBehaviour
+public class ShipMovement : NetworkBehaviour
 {
     public float topSpeed = 10f;
     public float acceleration = 2f;
@@ -12,6 +12,8 @@ public class ShipMovement : MonoBehaviour
     private SailHandler sailHandler;
 
     private float steerInput;
+
+    [Server]
     public void SetSteerInput(float direction)
     {
         steerInput = Mathf.Clamp(direction, -1f, 1f);
@@ -24,6 +26,8 @@ public class ShipMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!isServer) return;
+
         if (sailHandler == null) {
             Debug.LogError("SailHandler component not found in children of " + gameObject.name);
             return; 
