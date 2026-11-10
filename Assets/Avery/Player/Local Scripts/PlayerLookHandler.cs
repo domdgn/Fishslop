@@ -54,7 +54,8 @@ namespace FishSlop
 
             if (headPivot != null) headPivot.localEulerAngles = new Vector3(pitch - 90f, 0f, 0f);
 
-            movement.CmdSetYaw(yaw);
+            float yawDelta = input.x * lookSens;
+            if (yawDelta != 0f) movement.CmdAddYaw(yawDelta);
         }
     }
 }

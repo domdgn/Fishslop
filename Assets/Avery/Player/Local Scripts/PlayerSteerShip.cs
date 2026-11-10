@@ -33,8 +33,7 @@ public class PlayerSteerShip : NetworkBehaviour
 
         GetComponent<PlayerMovementHandler>().ClearMovementInput();
 
-        playerInput.actions.FindActionMap("Player").Disable();
-        playerInput.actions.FindActionMap("Ship").Enable();
+        playerInput.SwitchCurrentActionMap("Ship");
     }
 
     public void OnStopSteering(InputValue value)
@@ -49,8 +48,7 @@ public class PlayerSteerShip : NetworkBehaviour
         shipNetId = 0;
         steerInput = 0f;
 
-        playerInput.actions.FindActionMap("Player").Enable();
-        playerInput.actions.FindActionMap("Ship").Disable();
+        playerInput.SwitchCurrentActionMap("Player");
     }
     public void OnSteer(InputValue value)
     {

@@ -23,8 +23,8 @@ namespace FishSlop
         private float targetYaw;
 
         private ShipMovement currentShip;
-        private Vector3 lastShipPosition;
-        private Quaternion lastShipRotation;
+        private Rigidbody shipRb;
+        private int shipOverlaps;
 
         private void Awake()
         {
@@ -67,10 +67,16 @@ namespace FishSlop
             targetYaw = yaw;
         }
 
+        [Command]
+        public void CmdAddYaw(float delta)
+        {
+            targetYaw += delta;
+        }
+
         [ServerCallback]
         private void FixedUpdate()
         {
-            ApplyShipMovement();
+            if (shipRb != null) targetYaw += shipRb.angularVelocity.y * Mathf.Rad2Deg * Time.fixedDeltaTime;
 
             rb.MoveRotation(Quaternion.Euler(0f, targetYaw, 0f));
 
@@ -86,6 +92,14 @@ namespace FishSlop
             float speed = isSprinting ? sprintSpeed : moveSpeed;
 
             Vector3 velocity = moveDirection * speed;
+
+            if (shipRb != null)
+            {
+                Vector3 shipVel = shipRb.GetPointVelocity(rb.position);
+                velocity.x += shipVel.x;
+                velocity.z += shipVel.z;
+            }
+
             velocity.y = rb.linearVelocity.y;
 
             rb.linearVelocity = velocity;
@@ -107,47 +121,35 @@ namespace FishSlop
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
 
-        [Server]
-        private void ApplyShipMovement()
-        {
-            if (currentShip == null) return;
-
-            Transform ship = currentShip.transform;
-
-            Vector3 localPosition = Quaternion.Inverse(lastShipRotation) * (rb.position - lastShipPosition);
-
-            Vector3 newPosition = ship.position + ship.rotation * localPosition;
-
-            Vector3 shipDelta = newPosition - rb.position;
-
-            Quaternion rotationDelta = ship.rotation * Quaternion.Inverse(lastShipRotation);
-
-            targetYaw = (rotationDelta * Quaternion.Euler(0f, targetYaw, 0f)).eulerAngles.y;
-
-            rb.MovePosition(rb.position + shipDelta);
-
-            lastShipPosition = ship.position;
-            lastShipRotation = ship.rotation;
-        }
-
         [ServerCallback]
         private void OnTriggerEnter(Collider other)
         {
             ShipMovement ship = other.GetComponentInParent<ShipMovement>();
-
             if (ship == null) return;
 
-            currentShip = ship;
-            lastShipPosition = ship.transform.position;
-            lastShipRotation = ship.transform.rotation;
+            if (ship != currentShip)
+            {
+                currentShip = ship;
+                shipRb = ship.GetComponent<Rigidbody>();
+                shipOverlaps = 0;
+            }
+            shipOverlaps++;
         }
 
         [ServerCallback]
         private void OnTriggerExit(Collider other)
         {
             ShipMovement ship = other.GetComponentInParent<ShipMovement>();
+            if (ship == null || ship != currentShip) return;
 
-            if (ship == currentShip) currentShip = null;
+            shipOverlaps--;
+
+            if (shipOverlaps <= 0)
+            {
+                currentShip = null;
+                shipRb = null;
+                shipOverlaps = 0;
+            }
         }
 
         [Server]

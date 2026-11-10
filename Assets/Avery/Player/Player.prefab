@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 390017964709984987}
   - component: {fileID: 7414968225343204900}
   - component: {fileID: 6753666998994696404}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -146,7 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8931556320887681391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 494569133171519304}
   - component: {fileID: 5159029977067506085}
   - component: {fileID: 6773425565766716365}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7034602639271347265}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CameraPivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,15 +302,15 @@ GameObject:
   - component: {fileID: 5531037069529568228}
   - component: {fileID: 332617359426002493}
   - component: {fileID: 3723848030789327102}
-  - component: {fileID: 8421432918348649730}
   - component: {fileID: 3012104342611499498}
   - component: {fileID: 2892481602172476681}
   - component: {fileID: 5400206571319981098}
+  - component: {fileID: 5639067488498637873}
   - component: {fileID: 3063682664911600883}
   - component: {fileID: 385151228226889056}
   - component: {fileID: 611768954434866117}
   - component: {fileID: 3569550990872387489}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -382,33 +382,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  movement: {fileID: 8421432918348649730}
+  movement: {fileID: 0}
   look: {fileID: 3012104342611499498}
   interaction: {fileID: 5400206571319981098}
   steering: {fileID: 2892481602172476681}
---- !u!114 &8421432918348649730
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6768512443424409419}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7077c6b5562b48449795ff87a78d59f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishSlop.PlayerMovementHandler
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  moveSpeed: 3
-  sprintSpeed: 6
-  jumpForce: 5
-  groundCheck: {fileID: 8931556320887681391}
-  groundRadius: 0.2
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!114 &3012104342611499498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,6 +440,29 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   cameraPivot: {fileID: 7034602639271347265}
+--- !u!114 &5639067488498637873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6768512443424409419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a8c201fa088984894485ab8f470397, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishSlop.PlayerMovementHandler
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  moveSpeed: 5
+  sprintSpeed: 8
+  jumpForce: 6
+  groundCheck: {fileID: 8931556320887681391}
+  groundRadius: 0.2
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &3063682664911600883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -551,11 +551,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Mirror.Components::Mirror.NetworkTransformReliable
   syncDirection: 0
   syncMode: 0
-  syncInterval: 0.05
+  syncInterval: 0
   target: {fileID: 4160176309683897692}
   syncPosition: 1
   syncRotation: 1
-  syncScale: 1
+  syncScale: 0
   onlySyncOnChange: 1
   compressRotation: 1
   interpolatePosition: 1
@@ -567,8 +567,8 @@ MonoBehaviour:
   showOverlay: 1
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
   onlySyncOnChangeCorrectionMultiplier: 2
-  useFixedUpdate: 1
-  rotationSensitivity: 0.01
+  useFixedUpdate: 0
+  rotationSensitivity: 0.005
   positionPrecision: 0.01
   scalePrecision: 0.01
 --- !u!1 &8608512792439042378
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 3685501053268467331}
   - component: {fileID: 3761648820595498094}
   - component: {fileID: 5326742092390885827}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: NoseBoop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -667,7 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5709337897517793965}
   - component: {fileID: 3835186815789695106}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -857,6 +857,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a88ad560942ba7a4c9482be513ebbdca, type: 3}
       propertyPath: m_Name
       value: averyhead3 nohair
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a88ad560942ba7a4c9482be513ebbdca, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

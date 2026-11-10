@@ -36,9 +36,9 @@ namespace FishSlop
             playerInput.enabled = true;
 
             if (look != null) look.EnableLook();
-            if (interaction != null) interaction.enabled = true;
             if (movement != null) movement.enabled = true;
             if (steering != null) steering.enabled = true;
+            if (interaction != null) interaction.enabled = true;
 
             playerInput.actions.FindActionMap("Player").Enable();
             playerInput.SwitchCurrentActionMap("Player");
@@ -78,7 +78,7 @@ namespace FishSlop
         public void OnInteract(InputValue value)
         {
             if (!isOwned || !value.isPressed) return;
-
+            Debug.Log("Use Input called");
             if (interaction != null) interaction.DoInteract();
         }
     }

@@ -1,22 +1,24 @@
 using Mirror;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class ShipMovement : NetworkBehaviour
 {
     public float topSpeed = 10f;
     public float acceleration = 2f;
+    public float deceleration = 1f;
     public float steerSpeed = 20f;
-    private float currentSpeed = 0f;
 
+    private Rigidbody rb;
     private SailHandler sailHandler;
-
     private float steerInput;
 
-    [Server]
-    public void SetSteerInput(float direction)
+    private void Awake()
     {
-        steerInput = Mathf.Clamp(direction, -1f, 1f);
+        rb = GetComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        rb.useGravity = true;
+        rb.angularDamping = 2f;
     }
 
     private void Start()
@@ -24,60 +26,55 @@ public class ShipMovement : NetworkBehaviour
         sailHandler = GetComponentInChildren<SailHandler>(true);
     }
 
-    void FixedUpdate()
+    public override void OnStartServer()
     {
-        if (!isServer) return;
+        rb.isKinematic = false;
+    }
 
-        if (sailHandler == null) {
-            Debug.LogError("SailHandler component not found in children of " + gameObject.name);
-            return; 
-        }
+    public override void OnStartClient()
+    {
+        if (!isServer) rb.isKinematic = true;
+    }
+
+    [Server]
+    public void SetSteerInput(float direction)
+    {
+        steerInput = Mathf.Clamp(direction, -1f, 1f);
+    }
+
+    [ServerCallback]
+    private void FixedUpdate()
+    {
+        if (sailHandler == null) return;
+
+        Vector3 forward = -transform.forward;
+        forward.y = 0f;
+        forward.Normalize();
+
+        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
 
         if (sailHandler.isOpen)
         {
-            Accelerate();
+            rb.AddForce(forward * acceleration, ForceMode.Acceleration);
         }
         else
         {
-            Decelerate();
+            Vector3 slowed = Vector3.MoveTowards(flatVelocity, Vector3.zero, deceleration * Time.fixedDeltaTime);
+            rb.linearVelocity = new Vector3(slowed.x, rb.linearVelocity.y, slowed.z);
         }
 
-        transform.Translate(Vector3.back * currentSpeed * Time.deltaTime);
+        float forwardSpeed = Vector3.Dot(flatVelocity, forward);
+        if (forwardSpeed > topSpeed) rb.linearVelocity -= forward * (forwardSpeed - topSpeed);
 
-        if (NetworkServer.active)
-        {
-            Steer(steerInput);
-        }
+        float speedFactor = Mathf.Clamp01(flatVelocity.magnitude / topSpeed);
+        rb.AddTorque(Vector3.up * steerInput * steerSpeed * Mathf.Deg2Rad * speedFactor, ForceMode.Acceleration);
     }
 
-    private void Accelerate()
+    [ServerCallback]
+    private void OnCollisionEnter(Collision collision)
     {
-        if (currentSpeed < topSpeed)
-        {
-            currentSpeed += acceleration * Time.deltaTime;
-            if (currentSpeed > topSpeed)
-            {
-                currentSpeed = topSpeed;
-            }
-        }
-    }
+        float impactSpeed = collision.relativeVelocity.magnitude;
 
-    private void Decelerate()
-    {
-        if (currentSpeed > 0)
-        {
-            currentSpeed -= acceleration * Time.deltaTime;
-            if (currentSpeed < 0)
-            {
-                currentSpeed = 0;
-            }
-        }
-    }
-
-    public void Steer(float direction)
-    {
-        if (!NetworkServer.active || currentSpeed <= 0) return;
-
-        transform.Rotate(Vector3.up, direction * steerSpeed * (currentSpeed / topSpeed) * Time.fixedDeltaTime);
+        Debug.Log($"Ship crashed into {collision.gameObject.name} / Impact speed: {impactSpeed}");
     }
 }

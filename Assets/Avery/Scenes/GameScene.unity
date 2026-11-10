@@ -132,10 +132,6 @@ PrefabInstance:
       value: WaterPlane (15)
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 240.00002
       objectReference: {fileID: 0}
@@ -175,7 +171,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -196,10 +193,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (16)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -241,7 +234,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -401,10 +395,6 @@ PrefabInstance:
       value: WaterPlane (6)
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 60
       objectReference: {fileID: 0}
@@ -444,7 +434,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -542,10 +533,6 @@ PrefabInstance:
       value: WaterPlane (12)
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 180.00002
       objectReference: {fileID: 0}
@@ -585,7 +572,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -608,10 +596,6 @@ PrefabInstance:
       value: WaterPlane (3)
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -651,7 +635,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -672,10 +657,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -717,7 +698,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -738,10 +720,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (14)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -783,7 +761,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -804,10 +783,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (10)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -849,7 +824,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -986,50 +962,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!1 &957608749 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2899023865215933293, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
-  m_PrefabInstance: {fileID: 141705341859747397}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &957608754 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4277371151435685430, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
-  m_PrefabInstance: {fileID: 141705341859747397}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &957608755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 957608749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mirror.Components::Mirror.NetworkTransformReliable
-  syncDirection: 1
-  syncMode: 0
-  syncInterval: 0
-  target: {fileID: 957608754}
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  onlySyncOnChange: 1
-  compressRotation: 1
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 1
-  coordinateSpace: 0
-  timelineOffset: 1
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
-  onlySyncOnChangeCorrectionMultiplier: 2
-  useFixedUpdate: 0
-  rotationSensitivity: 0.01
-  positionPrecision: 0.01
-  scalePrecision: 0.01
 --- !u!1001 &1007862749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1041,10 +973,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (5)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1086,7 +1014,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1096,118 +1025,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
   m_PrefabInstance: {fileID: 1007862749}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1033230035
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1033230039}
-  - component: {fileID: 1033230038}
-  - component: {fileID: 1033230037}
-  - component: {fileID: 1033230036}
-  m_Layer: 3
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1033230036
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033230035}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1033230037
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033230035}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1033230038
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033230035}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1033230039
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033230035}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.38268343, z: 0.92387956, w: 0}
-  m_LocalPosition: {x: 14.15468, y: -4.499074, z: -9.356291}
-  m_LocalScale: {x: 2.19, y: 5.85, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 180}
 --- !u!1001 &1131669341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1219,10 +1036,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (8)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1264,7 +1077,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1285,10 +1099,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (7)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1330,7 +1140,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1351,10 +1162,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1396,7 +1203,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1417,10 +1225,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1462,7 +1266,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1828,10 +1633,6 @@ PrefabInstance:
       value: WaterPlane (9)
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 120
       objectReference: {fileID: 0}
@@ -1871,7 +1672,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1889,6 +1691,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2577421185449940178, guid: 2da7eea5be3064745a5a41f25163b72b, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4317131233074640316, guid: 2da7eea5be3064745a5a41f25163b72b, type: 3}
       propertyPath: m_Name
       value: Dockyard
@@ -1971,10 +1777,6 @@ PrefabInstance:
       value: WaterPlane (11)
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 120
       objectReference: {fileID: 0}
@@ -2014,7 +1816,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2035,10 +1838,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (13)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2080,7 +1879,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2101,10 +1901,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane (17)
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2146,7 +1942,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2245,7 +2042,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1639952658001065832, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
       propertyPath: sceneId
-      value: 2059169003
+      value: 2618124175
       objectReference: {fileID: 0}
     - target: {fileID: 2899023865215933293, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
       propertyPath: m_Name
@@ -2291,14 +2088,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7906880101914807487, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
+    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
+      propertyPath: topSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
+      propertyPath: steerSpeed
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
+      propertyPath: acceleration
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
+      propertyPath: deceleration
+      value: 2
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2899023865215933293, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 957608755}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
 --- !u!1001 &5757606168078808391
 PrefabInstance:
@@ -2311,10 +2120,6 @@ PrefabInstance:
     - target: {fileID: 8504335408137574635, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_Name
       value: WaterPlane
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5000001
       objectReference: {fileID: 0}
     - target: {fileID: 9029338275539665489, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2356,7 +2161,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1180018908068501962, guid: 301316ae8c1fdd44682f3c153bfa1bf5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2377,4 +2183,3 @@ SceneRoots:
   - {fileID: 1593923090}
   - {fileID: 1334701530}
   - {fileID: 141705341859747397}
-  - {fileID: 1033230039}

@@ -45,30 +45,45 @@ namespace FishSlop
             lookedAt = null;
             InteractableUIHandler.Instance.HideInteractableText();
         }
+        private string GetRelativePath(Transform child, Transform parent)
+        {
+            string path = child.name;
+
+            while (child.parent != parent)
+            {
+                child = child.parent;
+                path = child.name + "/" + path;
+            }
+
+            return path;
+        }
 
         public void DoInteract()
         {
             if (!isOwned || lookedAt == null) return;
 
             NetworkIdentity identity = lookedAt.GetNetworkIdentity();
-
             if (identity == null) return;
 
-            CmdInteract(identity);
+            Transform interactableTransform = ((MonoBehaviour)lookedAt).transform;
+
+            string path = GetRelativePath(interactableTransform, identity.transform);
+
+            CmdInteract(identity, path);
         }
 
         [Command]
-        private void CmdInteract(NetworkIdentity target)
+        private void CmdInteract(NetworkIdentity target, string path)
         {
             if (target == null) return;
 
-            IInteractable interactable = target.GetComponent<IInteractable>();
+            Transform child = target.transform.Find(path);
+            if (child == null) return;
 
-            if (interactable == null) interactable = target.GetComponentInChildren<IInteractable>();
-
+            IInteractable interactable = child.GetComponent<IInteractable>();
             if (interactable == null) return;
 
-            if (Vector3.Distance(transform.position, target.transform.position) > interactionDistance + 1f) return;
+            if (Vector3.Distance(transform.position, child.position) > interactionDistance + 1f) return;
 
             interactable.OnInteractStart(transform);
         }
