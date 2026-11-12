@@ -21,8 +21,11 @@ namespace FishSlop
         private bool jumpPressed;
         public float Yaw { get; private set; }
 
+        private ShipMovement ship;
         private Rigidbody shipRb;
         private float lastOnShipTime;
+        private Vector3 lastShipPosition;
+        private Quaternion lastShipRotation;
 
         private void Awake()
         {
@@ -34,8 +37,8 @@ namespace FishSlop
 
         private void Update()
         {
-            if (!isOwned || shipRb == null) return;
-            Yaw += shipRb.angularVelocity.y * Mathf.Rad2Deg * Time.deltaTime;
+            if (!isOwned || ship == null) return;
+            Yaw += ship.syncedAngularVelocity.y * Mathf.Rad2Deg * Time.deltaTime;
         }
 
         public override void OnStartAuthority()
@@ -77,7 +80,8 @@ namespace FishSlop
 
             if (shipRb != null)
             {
-                Vector3 sv = shipRb.GetPointVelocity(rb.position);
+                Vector3 sv = ship.GetSyncedPointVelocity(rb.position);
+                //Debug.LogWarning($"Ship velocity: {sv} | Player velocity: {velocity}");
                 velocity.x += sv.x;
                 velocity.z += sv.z;
             }
@@ -103,18 +107,29 @@ namespace FishSlop
 
             if (Physics.Raycast(groundCheck.position, Vector3.down, out RaycastHit hit, 2f, groundMask, QueryTriggerInteraction.Ignore))
             {
-                ShipMovement s = hit.collider.GetComponentInParent<ShipMovement>();
-                if (s != null) found = s.GetComponent<Rigidbody>();
+                var deck = hit.collider.GetComponent<ShipDeckFollower>();
+                if (deck != null) 
+                {
+                    found = deck.shipRB;
+                    ship = deck.shipMovement;
+                }
             }
 
             if (found != null)
             {
-                shipRb = found;
+                if (shipRb != found)
+                {
+                    shipRb = found;
+                    lastShipPosition = shipRb.position;
+                    lastShipRotation = shipRb.rotation;
+                }
+
                 lastOnShipTime = Time.time;
             }
             else if (Time.time - lastOnShipTime > 0.25f)
             {
                 shipRb = null;
+                ship = null;
             }
         }
 

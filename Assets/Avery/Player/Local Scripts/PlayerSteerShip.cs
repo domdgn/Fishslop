@@ -20,21 +20,37 @@ namespace FishSlop
         }
         public void StartSteeringShip(ShipMovement ship)
         {
-            if (!isOwned || ship == null) return;
+            if (ship == null) return;
 
             NetworkIdentity shipIdentity = ship.GetComponentInParent<NetworkIdentity>();
-
             if (shipIdentity == null)
             {
                 Debug.LogError("ShipMovement does not have a NetworkIdentity component in its parent.");
                 return;
             }
 
-            shipNetId = shipIdentity.netId;
+            if (isOwned)
+            {
+                BeginSteeringLocal(shipIdentity.netId);
+            }
+            else if (isServer)
+            {
+                TargetBeginSteering(shipIdentity.netId);
+            }
+        }
+
+        [TargetRpc]
+        private void TargetBeginSteering(uint netId)
+        {
+            BeginSteeringLocal(netId);
+        }
+
+        private void BeginSteeringLocal(uint netId)
+        {
+            shipNetId = netId;
             steerInput = 0f;
 
             GetComponent<PlayerMovementHandler>().ClearMovementInput();
-
             playerInput.SwitchCurrentActionMap("Ship");
         }
 
@@ -64,11 +80,23 @@ namespace FishSlop
         [Command]
         private void CmdSetSteerInput(uint targetShipId, float direction)
         {
-            if (!NetworkServer.spawned.TryGetValue(targetShipId, out NetworkIdentity identity)) return;
+            Debug.Log($"[PlayerSteerShip] Server received steer command. Ship ID: {targetShipId}, Direction: {direction}");
+
+            if (!NetworkServer.spawned.TryGetValue(targetShipId, out NetworkIdentity identity))
+            {
+                Debug.LogError($"[PlayerSteerShip] Server cannot find ship with netId {targetShipId}");
+                return;
+            }
 
             ShipMovement ship = identity.GetComponentInChildren<ShipMovement>(true);
 
-            if (ship != null) ship.SetSteerInput(direction);
+            if (ship == null)
+            {
+                Debug.LogError("[PlayerSteerShip] Server found NetworkIdentity but no ShipMovement.");
+                return;
+            }
+
+            ship.SetSteerInput(direction);
         }
     }
 }

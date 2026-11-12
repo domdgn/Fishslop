@@ -14,6 +14,14 @@ namespace FishSlop
         private Rigidbody rb;
         private SailHandler sailHandler;
         private float steerInput;
+        private Transform rotatePoint;
+
+        [SyncVar]
+        public Vector3 syncedVelocity;
+
+        [SyncVar]
+        public Vector3 syncedAngularVelocity;
+
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
@@ -21,6 +29,11 @@ namespace FishSlop
             rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             rb.useGravity = true;
             rb.angularDamping = 2f;
+            ShipWheel shipWheel = GetComponentInChildren<ShipWheel>(true);
+            if (shipWheel != null)
+            {
+                rotatePoint = shipWheel.transform;
+            }
         }
 
         private void Start()
@@ -36,6 +49,13 @@ namespace FishSlop
         public override void OnStartClient()
         {
             if (!isServer) rb.isKinematic = true;
+        }
+
+        public Vector3 GetSyncedPointVelocity(Vector3 worldPosition)
+        {
+            Vector3 offset = worldPosition - transform.position;
+
+            return syncedVelocity + Vector3.Cross(syncedAngularVelocity, offset);
         }
 
         [Server]
@@ -69,7 +89,17 @@ namespace FishSlop
             if (forwardSpeed > topSpeed) rb.linearVelocity -= forward * (forwardSpeed - topSpeed);
 
             float speedFactor = Mathf.Clamp01(flatVelocity.magnitude / topSpeed);
-            rb.AddTorque(Vector3.up * steerInput * steerSpeed * Mathf.Deg2Rad * speedFactor, ForceMode.Acceleration);
+            float angle = steerInput * steerSpeed * speedFactor * Time.fixedDeltaTime;
+
+            Quaternion rotation = Quaternion.Euler(0f, angle, 0f);
+
+            Vector3 offset = rb.position - rotatePoint.position;
+
+            rb.MovePosition(rotatePoint.position + rotation * offset);
+            rb.MoveRotation(rotation * rb.rotation);
+
+            syncedVelocity = rb.linearVelocity;
+            syncedAngularVelocity = rb.angularVelocity;
         }
 
         [ServerCallback]

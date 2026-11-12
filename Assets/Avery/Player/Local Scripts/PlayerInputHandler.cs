@@ -11,6 +11,7 @@ namespace FishSlop
         [SerializeField] private PlayerLookHandler look;
         [SerializeField] private PlayerInteraction interaction;
         [SerializeField] private PlayerSteerShip steering;
+        [SerializeField] private GameObject boop;
 
         private PlayerInput playerInput;
 
@@ -22,6 +23,7 @@ namespace FishSlop
             if (movement == null) movement = GetComponent<PlayerMovementHandler>();
             if (interaction == null) interaction = GetComponent<PlayerInteraction>();
             if (steering == null) steering = GetComponent<PlayerSteerShip>();
+            if (boop != null) boop.SetActive(true);
 
             foreach (var actionMap in playerInput.actions.actionMaps)
             {
@@ -39,6 +41,7 @@ namespace FishSlop
             if (movement != null) movement.enabled = true;
             if (steering != null) steering.enabled = true;
             if (interaction != null) interaction.enabled = true;
+            if (boop != null) boop.SetActive(false);
 
             playerInput.actions.FindActionMap("Player").Enable();
             playerInput.SwitchCurrentActionMap("Player");

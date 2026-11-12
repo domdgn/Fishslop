@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 385151228226889056}
   - component: {fileID: 611768954434866117}
   - component: {fileID: 3569550990872387489}
+  - component: {fileID: 3228358942526768348}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -382,10 +383,11 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  movement: {fileID: 0}
+  movement: {fileID: 5639067488498637873}
   look: {fileID: 3012104342611499498}
   interaction: {fileID: 5400206571319981098}
   steering: {fileID: 2892481602172476681}
+  boop: {fileID: 8608512792439042378}
 --- !u!114 &3012104342611499498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,13 +458,13 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   moveSpeed: 3
-  sprintSpeed: 6
-  jumpForce: 5
+  sprintSpeed: 5
+  jumpForce: 6
   groundCheck: {fileID: 8931556320887681391}
-  groundRadius: 0.2
+  groundRadius: 0.15
   groundMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 1032
 --- !u!114 &3063682664911600883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,7 +551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff3ba0becae47b8b9381191598957c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Mirror.Components::Mirror.NetworkTransformReliable
-  syncDirection: 0
+  syncDirection: 1
   syncMode: 0
   syncInterval: 0
   target: {fileID: 4160176309683897692}
@@ -571,6 +573,22 @@ MonoBehaviour:
   rotationSensitivity: 0.005
   positionPrecision: 0.01
   scalePrecision: 0.01
+--- !u!114 &3228358942526768348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6768512443424409419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0e536882c752cb46bdf457d21f287ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishSlop.PlayerRespawn
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  fallYLevel: -10
 --- !u!1 &8608512792439042378
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,6 +600,7 @@ GameObject:
   - component: {fileID: 3685501053268467331}
   - component: {fileID: 3761648820595498094}
   - component: {fileID: 5326742092390885827}
+  - component: {fileID: 4049555038537882802}
   m_Layer: 6
   m_Name: NoseBoop
   m_TagString: Untagged
@@ -642,9 +661,9 @@ MonoBehaviour:
   onInteractStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3835186815789695106}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: Play
+      - m_Target: {fileID: 4049555038537882802}
+        m_TargetAssemblyTypeName: FishSlop.NoseBoop, Assembly-CSharp
+        m_MethodName: PlaySound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -657,6 +676,22 @@ MonoBehaviour:
   onInteractEnd:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4049555038537882802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8608512792439042378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc25797a0f9d71743ab6f8fc66a4b659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishSlop.NoseBoop
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  audioSource: {fileID: 3835186815789695106}
 --- !u!1 &8933269248481702473
 GameObject:
   m_ObjectHideFlags: 0
