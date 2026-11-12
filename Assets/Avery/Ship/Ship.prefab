@@ -53,10 +53,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  topSpeed: 5
-  acceleration: 0.3
-  deceleration: 1
-  steerSpeed: 20
+  topSpeed: 10
+  acceleration: 3
+  deceleration: 2
+  steerSpeed: 40
 --- !u!114 &1639952658001065832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -526,7 +526,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 4252773037009593668, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
     - {fileID: 477191593064986396, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
-    - {fileID: 5753773751063042025, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
     m_RemovedGameObjects:
     - {fileID: 2971606993676899108, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
     - {fileID: 6447784216987013691, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}

@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class ParentPlayerToShip : MonoBehaviour
+namespace FishSlop
 {
-    private void OnTriggerEnter(Collider other)
+    public class ParentPlayerToShip : MonoBehaviour
     {
-        if (other.CompareTag("Player"))
+        private void OnTriggerEnter(Collider other)
         {
-            other.transform.SetParent(transform);
+            if (other.CompareTag("Player"))
+            {
+                other.transform.SetParent(transform);
+            }
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
+        private void OnTriggerExit(Collider other)
         {
-            other.transform.SetParent(null);
+            if (other.CompareTag("Player"))
+            {
+                other.transform.SetParent(null);
+            }
         }
     }
 }

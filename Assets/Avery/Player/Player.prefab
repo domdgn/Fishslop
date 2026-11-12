@@ -162,7 +162,7 @@ Transform:
   m_GameObject: {fileID: 5441273614781010017}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.05, z: 0}
+  m_LocalPosition: {x: 0, y: -0.867, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -357,7 +357,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 192
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -455,9 +455,9 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  moveSpeed: 5
-  sprintSpeed: 8
-  jumpForce: 6
+  moveSpeed: 3
+  sprintSpeed: 6
+  jumpForce: 5
   groundCheck: {fileID: 8931556320887681391}
   groundRadius: 0.2
   groundMask:
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 3685501053268467331}
   - component: {fileID: 3761648820595498094}
   - component: {fileID: 5326742092390885827}
-  m_Layer: 8
+  m_Layer: 6
   m_Name: NoseBoop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -620,7 +620,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

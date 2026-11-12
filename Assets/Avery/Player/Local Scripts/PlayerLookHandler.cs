@@ -11,7 +11,7 @@ namespace FishSlop
         [SerializeField] private float lookSens = 0.2f;
         [SerializeField] private float maxLookY = 80f;
 
-        private float yaw;
+        [SyncVar] private float syncedPitch;
         private float pitch;
 
         private PlayerMovementHandler movement;
@@ -25,7 +25,6 @@ namespace FishSlop
 
         public void EnableLook()
         {
-            yaw = transform.eulerAngles.y;
             pitch = 0f;
 
             if (cameraPivot != null) cameraPivot.gameObject.SetActive(true);
@@ -46,16 +45,33 @@ namespace FishSlop
         {
             if (!isOwned) return;
 
-            yaw += input.x * lookSens;
-            pitch -= input.y * lookSens;
-            pitch = Mathf.Clamp(pitch, -maxLookY, maxLookY);
+            movement.AddYaw(input.x * lookSens);
+            pitch = Mathf.Clamp(pitch - input.y * lookSens, -maxLookY, maxLookY);
 
-            if (cameraPivot != null) cameraPivot.localEulerAngles = new Vector3(pitch, 0f, 0f);
+            if (Mathf.Abs(pitch - syncedPitch) > 1f) CmdSetPitch(pitch);
+        }
 
-            if (headPivot != null) headPivot.localEulerAngles = new Vector3(pitch - 90f, 0f, 0f);
+        [Command(channel = Channels.Unreliable)]
+        private void CmdSetPitch(float p) => syncedPitch = p;
 
-            float yawDelta = input.x * lookSens;
-            if (yawDelta != 0f) movement.CmdAddYaw(yawDelta);
+        private void LateUpdate()
+        {
+            if (isOwned)
+            {
+                if (cameraPivot != null && cameraPivot.gameObject.activeSelf)
+                {
+                    cameraPivot.rotation = Quaternion.Euler(pitch, movement.Yaw, 0f);
+                }
+
+                if (headPivot != null)
+                {
+                    headPivot.localEulerAngles = new Vector3(pitch - 90f, 0f, 0f);
+                }
+            }
+            else if (headPivot != null)
+            {
+                headPivot.localEulerAngles = new Vector3(syncedPitch - 90f, 0f, 0f);
+            }
         }
     }
 }

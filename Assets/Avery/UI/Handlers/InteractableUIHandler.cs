@@ -1,31 +1,34 @@
 using TMPro;
 using UnityEngine;
 
-public class InteractableUIHandler : MonoBehaviour
+namespace FishSlop
 {
-    public static InteractableUIHandler Instance { get; private set; }
-    public TextMeshProUGUI InteractableText;
-    private void Awake()
+    public class InteractableUIHandler : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        public static InteractableUIHandler Instance { get; private set; }
+        public TextMeshProUGUI InteractableText;
+        private void Awake()
         {
-            Destroy(this.gameObject);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Instance = this;
+            }
         }
-        else
+
+        public void ShowInteractableText(string text)
         {
-            Instance = this;
+            InteractableText.text = text;
+            InteractableText.gameObject.SetActive(true);
         }
-    }
-
-    public void ShowInteractableText(string text)
-    {
-        InteractableText.text = text;
-        InteractableText.gameObject.SetActive(true);
-    }
 
 
-    public void HideInteractableText()
-    {
-        InteractableText.gameObject.SetActive(false);
+        public void HideInteractableText()
+        {
+            InteractableText.gameObject.SetActive(false);
+        }
     }
 }

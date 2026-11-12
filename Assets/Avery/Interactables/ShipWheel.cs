@@ -1,59 +1,62 @@
 using Mirror;
 using UnityEngine;
 
-public class ShipWheel : MonoBehaviour, IInteractable
+namespace FishSlop
 {
-    public string interactionText = "{INTERACT} Helm ship";
-    public void OnInteractEnd(Transform interactor)
+    public class ShipWheel : MonoBehaviour, IInteractable
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnInteractStart(Transform interactor)
-    {
-        PlayerSteerShip playerSteerShip = interactor.GetComponent<PlayerSteerShip>();
-        if (playerSteerShip != null)
+        public string interactionText = "{INTERACT} Helm ship";
+        public void OnInteractEnd(Transform interactor)
         {
-            ShipMovement shipMovement = GetComponentInParent<ShipMovement>();
-            if (shipMovement != null)
+            throw new System.NotImplementedException();
+        }
+
+        public void OnInteractStart(Transform interactor)
+        {
+            PlayerSteerShip playerSteerShip = interactor.GetComponent<PlayerSteerShip>();
+            if (playerSteerShip != null)
             {
-                playerSteerShip.StartSteeringShip(shipMovement);
+                ShipMovement shipMovement = GetComponentInParent<ShipMovement>();
+                if (shipMovement != null)
+                {
+                    playerSteerShip.StartSteeringShip(shipMovement);
+                }
+                else
+                {
+                    Debug.LogError("ShipMovement component not found in parent of " + gameObject.name);
+                }
             }
-            else
+        }
+
+        public void OnLookAt(Transform interactor)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string GetInteractionText()
+        {
+            return interactionText;
+        }
+
+        public NetworkIdentity GetNetworkIdentity()
+        {
+            NetworkIdentity identity = GetComponent<NetworkIdentity>();
+            if (identity == null)
             {
-                Debug.LogError("ShipMovement component not found in parent of " + gameObject.name);
+                identity = GetComponentInParent<NetworkIdentity>();
             }
+            if (identity == null)
+            {
+                Debug.LogError("TemplateInteractable does not have a NetworkIdentity component.");
+                return null;
+            }
+
+            return identity;
         }
-    }
 
-    public void OnLookAt(Transform interactor)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public string GetInteractionText()
-    {
-        return interactionText;
-    }
-
-    public NetworkIdentity GetNetworkIdentity()
-    {
-        NetworkIdentity identity = GetComponent<NetworkIdentity>();
-        if (identity == null)
+        void Update()
         {
-            identity = GetComponentInParent<NetworkIdentity>();
+
         }
-        if (identity == null)
-        {
-            Debug.LogError("TemplateInteractable does not have a NetworkIdentity component.");
-            return null;
-        }
-
-        return identity;
-    }
-
-    void Update()
-    {
-
     }
 }

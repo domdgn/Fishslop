@@ -1,32 +1,35 @@
 using UnityEngine;
 
-public class WaterWaves : MonoBehaviour
+namespace FishSlop
 {
-    public static WaterWaves Instance { get; private set; }
-
-    private void Awake()
+    public class WaterWaves : MonoBehaviour
     {
-        if (Instance != null && Instance != this)
+        public static WaterWaves Instance { get; private set; }
+
+        private void Awake()
         {
-            Destroy(this);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+            }
+            else
+            {
+                Instance = this;
+            }
         }
-        else
+
+        public GerstnerWave wave1;
+        public GerstnerWave wave2;
+        public GerstnerWave wave3;
+
+        public Vector3 GetDisplacement(Vector3 worldPosition, float time)
         {
-            Instance = this;
+            return wave1.GetDisplacement(worldPosition, time) + wave2.GetDisplacement(worldPosition, time) + wave3.GetDisplacement(worldPosition, time);
         }
-    }
 
-    public GerstnerWave wave1;
-    public GerstnerWave wave2;
-    public GerstnerWave wave3;
-
-    public Vector3 GetDisplacement(Vector3 worldPosition, float time)
-    {
-        return wave1.GetDisplacement(worldPosition, time) + wave2.GetDisplacement(worldPosition, time) + wave3.GetDisplacement(worldPosition, time);
-    }
-
-    public float GetHeight(Vector3 worldPosition, float time)
-    {
-        return transform.position.y + GetDisplacement(worldPosition, time).y;
+        public float GetHeight(Vector3 worldPosition, float time)
+        {
+            return transform.position.y + GetDisplacement(worldPosition, time).y;
+        }
     }
 }

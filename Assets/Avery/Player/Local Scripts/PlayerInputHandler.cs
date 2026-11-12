@@ -54,19 +54,19 @@ namespace FishSlop
         public void OnMove(InputValue value)
         {
             if (!isOwned) return;
-            movement.CmdSetMoveInput(value.Get<Vector2>());
+            movement.SetMoveInput(value.Get<Vector2>());
         }
 
         public void OnSprint(InputValue value)
         {
             if (!isOwned) return;
-            movement.CmdSetSprint(value.isPressed);
+            movement.SetSprint(value.isPressed);
         }
 
         public void OnJump(InputValue value)
         {
             if (!isOwned || !value.isPressed) return;
-            movement.CmdJump();
+            movement.Jump();
         }
 
         public void OnLook(InputValue value)

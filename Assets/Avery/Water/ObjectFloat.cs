@@ -2,48 +2,51 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-[RequireComponent(typeof(Rigidbody))]
-public class ObjectFloat : NetworkBehaviour
+namespace FishSlop
 {
-    public List<Transform> floatTransforms = new List<Transform>();
-
-    private Rigidbody rb;
-
-    private void Awake()
+    [RequireComponent(typeof(Rigidbody))]
+    public class ObjectFloat : NetworkBehaviour
     {
-        rb = GetComponent<Rigidbody>();
-    }
+        public List<Transform> floatTransforms = new List<Transform>();
 
-    [ServerCallback]
-    private void FixedUpdate()
-    {
-        if (floatTransforms.Count < 3) return;
+        private Rigidbody rb;
 
-        Vector3 centre = Vector3.zero;
-
-        foreach (Transform t in floatTransforms) centre += t.position;
-
-        centre /= floatTransforms.Count;
-
-        Vector3 normal = Vector3.zero;
-
-        for (int i = 0; i < floatTransforms.Count; i++)
+        private void Awake()
         {
-            Vector3 a = floatTransforms[i].position - centre;
-            Vector3 b = floatTransforms[(i + 1) % floatTransforms.Count].position - centre;
-
-            normal += Vector3.Cross(a, b);
+            rb = GetComponent<Rigidbody>();
         }
 
-        if (normal.sqrMagnitude < 0.0001f) return;
+        [ServerCallback]
+        private void FixedUpdate()
+        {
+            if (floatTransforms.Count < 3) return;
 
-        normal.Normalize();
+            Vector3 centre = Vector3.zero;
 
-        if (normal.y < 0) normal = -normal;
+            foreach (Transform t in floatTransforms) centre += t.position;
 
-        Quaternion targetRotation = Quaternion.FromToRotation(transform.up, normal) * rb.rotation;
+            centre /= floatTransforms.Count;
 
-        rb.MovePosition(centre);
-        rb.MoveRotation(targetRotation);
+            Vector3 normal = Vector3.zero;
+
+            for (int i = 0; i < floatTransforms.Count; i++)
+            {
+                Vector3 a = floatTransforms[i].position - centre;
+                Vector3 b = floatTransforms[(i + 1) % floatTransforms.Count].position - centre;
+
+                normal += Vector3.Cross(a, b);
+            }
+
+            if (normal.sqrMagnitude < 0.0001f) return;
+
+            normal.Normalize();
+
+            if (normal.y < 0) normal = -normal;
+
+            Quaternion targetRotation = Quaternion.FromToRotation(transform.up, normal) * rb.rotation;
+
+            rb.MovePosition(centre);
+            rb.MoveRotation(targetRotation);
+        }
     }
 }

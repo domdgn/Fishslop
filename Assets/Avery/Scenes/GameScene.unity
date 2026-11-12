@@ -2042,7 +2042,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1639952658001065832, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
       propertyPath: sceneId
-      value: 2618124175
+      value: 3707827533
       objectReference: {fileID: 0}
     - target: {fileID: 2899023865215933293, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
       propertyPath: m_Name
@@ -2088,21 +2088,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
-      propertyPath: topSpeed
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
-      propertyPath: steerSpeed
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
-      propertyPath: acceleration
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7063092716098877424, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
-      propertyPath: deceleration
-      value: 2
+    - target: {fileID: 6003765116675519706, guid: c0854d51eb789904186f1814f9c927f3, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

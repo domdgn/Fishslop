@@ -1,27 +1,30 @@
 using UnityEngine;
 using Mirror;
 
-public class WaveBobDisplacement : NetworkBehaviour
+namespace FishSlop
 {
-    private float baseHeight;
-
-    private void Start()
+    public class WaveBobDisplacement : NetworkBehaviour
     {
-        baseHeight = transform.localPosition.y;
-    }
+        private float baseHeight;
 
-    private void Update()
-    {
-        if (!isServer) return;
+        private void Start()
+        {
+            baseHeight = transform.localPosition.y;
+        }
 
-        Vector3 worldPosition = transform.position;
-        float time = Time.time;
+        private void Update()
+        {
+            if (!isServer) return;
 
-        Vector3 displacement = WaterWaves.Instance.GetDisplacement(worldPosition, time);
+            Vector3 worldPosition = transform.position;
+            float time = Time.time;
 
-        Vector3 localPosition = transform.localPosition;
-        localPosition.y = baseHeight + displacement.y;
+            Vector3 displacement = WaterWaves.Instance.GetDisplacement(worldPosition, time);
 
-        transform.localPosition = localPosition;
+            Vector3 localPosition = transform.localPosition;
+            localPosition.y = baseHeight + displacement.y;
+
+            transform.localPosition = localPosition;
+        }
     }
 }

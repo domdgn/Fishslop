@@ -1,44 +1,47 @@
 using Mirror;
 using UnityEngine;
 
-public class Halyard : MonoBehaviour, IInteractable
+namespace FishSlop
 {
-    public string interactionText = "{INTERACT} Lower/Raise the sail";
-    public SailHandler sailHandler;
-    public void OnInteractEnd(Transform interactor)
+    public class Halyard : MonoBehaviour, IInteractable
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void OnInteractStart(Transform interactor)
-    {
-        sailHandler.ToggleSail();
-    }
-
-    public void OnLookAt(Transform interactor)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public string GetInteractionText()
-    {
-        return interactionText;
-    }
-
-    public NetworkIdentity GetNetworkIdentity()
-    {
-        NetworkIdentity identity = GetComponentInParent<NetworkIdentity>();
-        if (identity == null)
+        public string interactionText = "{INTERACT} Lower/Raise the sail";
+        public SailHandler sailHandler;
+        public void OnInteractEnd(Transform interactor)
         {
-            Debug.LogError("TemplateInteractable does not have a NetworkIdentity component.");
-            return null;
+            throw new System.NotImplementedException();
         }
 
-        return identity;
-    }
+        public void OnInteractStart(Transform interactor)
+        {
+            sailHandler.ToggleSail();
+        }
 
-    void Update()
-    {
+        public void OnLookAt(Transform interactor)
+        {
+            throw new System.NotImplementedException();
+        }
 
+        public string GetInteractionText()
+        {
+            return interactionText;
+        }
+
+        public NetworkIdentity GetNetworkIdentity()
+        {
+            NetworkIdentity identity = GetComponentInParent<NetworkIdentity>();
+            if (identity == null)
+            {
+                Debug.LogError("TemplateInteractable does not have a NetworkIdentity component.");
+                return null;
+            }
+
+            return identity;
+        }
+
+        void Update()
+        {
+
+        }
     }
 }

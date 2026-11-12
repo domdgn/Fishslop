@@ -1,41 +1,43 @@
-
 using UnityEngine;
 
-[System.Serializable]
-public struct GerstnerWave
+namespace FishSlop
 {
-    public float steepness;
-    public float wavelength;
-    public float angle;
-    public float phaseOffset;
-
-    public Vector3 GetDisplacement(Vector3 worldPosition, float time)
+    [System.Serializable]
+    public struct GerstnerWave
     {
-        float radians = angle * Mathf.Deg2Rad;
+        public float steepness;
+        public float wavelength;
+        public float angle;
+        public float phaseOffset;
 
-        float sinAngle = Mathf.Sin(radians);
-        float cosAngle = Mathf.Cos(radians);
+        public Vector3 GetDisplacement(Vector3 worldPosition, float time)
+        {
+            float radians = angle * Mathf.Deg2Rad;
 
-        float k = 2f * Mathf.PI / wavelength;
+            float sinAngle = Mathf.Sin(radians);
+            float cosAngle = Mathf.Cos(radians);
 
-        float positionDotDirection =
-            sinAngle * worldPosition.x +
-            cosAngle * worldPosition.z;
+            float k = 2f * Mathf.PI / wavelength;
 
-        float frequency = Mathf.Sqrt(9.81f / k);
+            float positionDotDirection =
+                sinAngle * worldPosition.x +
+                cosAngle * worldPosition.z;
 
-        float theta =
-            positionDotDirection * k
-            - time * frequency
-            + phaseOffset;
+            float frequency = Mathf.Sqrt(9.81f / k);
 
-        float sinTheta = Mathf.Sin(theta);
-        float cosTheta = Mathf.Cos(theta);
+            float theta =
+                positionDotDirection * k
+                - time * frequency
+                + phaseOffset;
 
-        float x = steepness * cosAngle * sinTheta;
-        float y = steepness * sinTheta;
-        float z = steepness * sinAngle * sinTheta;
+            float sinTheta = Mathf.Sin(theta);
+            float cosTheta = Mathf.Cos(theta);
 
-        return new Vector3(x, y, z);
+            float x = steepness * cosAngle * sinTheta;
+            float y = steepness * sinTheta;
+            float z = steepness * sinAngle * sinTheta;
+
+            return new Vector3(x, y, z);
+        }
     }
 }

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1370245821925089541}
   - component: {fileID: 438836389582362467}
   - component: {fileID: 6905128262090071111}
+  - component: {fileID: 7883255437971534386}
+  - component: {fileID: 8878300230579733504}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -83,7 +85,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   offlineSceneLoadDelay: 0
-  transport: {fileID: 208646117687931070}
+  transport: {fileID: 8878300230579733504}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
@@ -109,6 +111,7 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
+  playerGameplayPrefab: {fileID: 6768512443424409419, guid: 50afed7e8660f4347a2560ababae111b, type: 3}
 --- !u!114 &6905128262090071111
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,3 +128,35 @@ MonoBehaviour:
   lobbyID: 0
   networkManager: {fileID: 438836389582362467}
   panelSwapper: {fileID: 0}
+--- !u!114 &7883255437971534386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372786910860599315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror::Mirror.NetworkManagerHUD
+  offsetX: 0
+  offsetY: 0
+--- !u!114 &8878300230579733504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2372786910860599315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96b149f511061407fb54895c057b7736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror.Transports::Mirror.LatencySimulation
+  wrap: {fileID: 208646117687931070}
+  latency: 100
+  jitter: 0.02
+  jitterSpeed: 1
+  unreliableLoss: 2
+  unreliableScramble: 2

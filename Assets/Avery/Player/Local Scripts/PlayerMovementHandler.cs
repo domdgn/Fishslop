@@ -19,140 +19,41 @@ namespace FishSlop
         private Vector2 moveInput;
         private bool isSprinting;
         private bool jumpPressed;
+        public float Yaw { get; private set; }
 
-        private float targetYaw;
-
-        private ShipMovement currentShip;
         private Rigidbody shipRb;
-        private int shipOverlaps;
+        private float lastOnShipTime;
 
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
-
             rb.isKinematic = true;
             rb.freezeRotation = true;
             rb.interpolation = RigidbodyInterpolation.Interpolate;
         }
 
-        public override void OnStartServer()
+        private void Update()
         {
-            base.OnStartServer();
+            if (!isOwned || shipRb == null) return;
+            Yaw += shipRb.angularVelocity.y * Mathf.Rad2Deg * Time.deltaTime;
+        }
 
+        public override void OnStartAuthority()
+        {
             rb.isKinematic = false;
-            targetYaw = transform.eulerAngles.y;
+            Yaw = transform.eulerAngles.y;
         }
 
-        [Command]
-        public void CmdSetMoveInput(Vector2 input)
+        public override void OnStopAuthority()
         {
-            moveInput = Vector2.ClampMagnitude(input, 1f);
+            rb.isKinematic = true;
         }
 
-        [Command]
-        public void CmdSetSprint(bool sprinting)
-        {
-            isSprinting = sprinting;
-        }
+        public void SetMoveInput(Vector2 input) => moveInput = Vector2.ClampMagnitude(input, 1f);
+        public void SetSprint(bool sprinting) => isSprinting = sprinting;
+        public void Jump() => jumpPressed = true;
+        public void AddYaw(float delta) => Yaw += delta;
 
-        [Command]
-        public void CmdJump()
-        {
-            jumpPressed = true;
-        }
-
-        [Command]
-        public void CmdSetYaw(float yaw)
-        {
-            targetYaw = yaw;
-        }
-
-        [Command]
-        public void CmdAddYaw(float delta)
-        {
-            targetYaw += delta;
-        }
-
-        [ServerCallback]
-        private void FixedUpdate()
-        {
-            if (shipRb != null) targetYaw += shipRb.angularVelocity.y * Mathf.Rad2Deg * Time.fixedDeltaTime;
-
-            rb.MoveRotation(Quaternion.Euler(0f, targetYaw, 0f));
-
-            HandleMovement();
-            HandleJump();
-        }
-
-        [Server]
-        private void HandleMovement()
-        {
-            Vector3 moveDirection = Quaternion.Euler(0f, targetYaw, 0f) * new Vector3(moveInput.x, 0f, moveInput.y);
-
-            float speed = isSprinting ? sprintSpeed : moveSpeed;
-
-            Vector3 velocity = moveDirection * speed;
-
-            if (shipRb != null)
-            {
-                Vector3 shipVel = shipRb.GetPointVelocity(rb.position);
-                velocity.x += shipVel.x;
-                velocity.z += shipVel.z;
-            }
-
-            velocity.y = rb.linearVelocity.y;
-
-            rb.linearVelocity = velocity;
-        }
-
-        [Server]
-        private void HandleJump()
-        {
-            if (!jumpPressed) return;
-
-            jumpPressed = false;
-
-            if (!IsGrounded()) return;
-
-            Vector3 velocity = rb.linearVelocity;
-            velocity.y = 0f;
-            rb.linearVelocity = velocity;
-
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
-
-        [ServerCallback]
-        private void OnTriggerEnter(Collider other)
-        {
-            ShipMovement ship = other.GetComponentInParent<ShipMovement>();
-            if (ship == null) return;
-
-            if (ship != currentShip)
-            {
-                currentShip = ship;
-                shipRb = ship.GetComponent<Rigidbody>();
-                shipOverlaps = 0;
-            }
-            shipOverlaps++;
-        }
-
-        [ServerCallback]
-        private void OnTriggerExit(Collider other)
-        {
-            ShipMovement ship = other.GetComponentInParent<ShipMovement>();
-            if (ship == null || ship != currentShip) return;
-
-            shipOverlaps--;
-
-            if (shipOverlaps <= 0)
-            {
-                currentShip = null;
-                shipRb = null;
-                shipOverlaps = 0;
-            }
-        }
-
-        [Server]
         public void ClearMovementInput()
         {
             moveInput = Vector2.zero;
@@ -160,10 +61,66 @@ namespace FishSlop
             jumpPressed = false;
         }
 
-        [Server]
+        [TargetRpc]
+        public void TargetClearMovementInput(NetworkConnectionToClient conn) => ClearMovementInput();
+
+        private void FixedUpdate()
+        {
+            if (!isOwned) return;
+
+            FindShip();
+
+            rb.MoveRotation(Quaternion.Euler(0f, Yaw, 0f));
+
+            Vector3 dir = Quaternion.Euler(0f, Yaw, 0f) * new Vector3(moveInput.x, 0f, moveInput.y);
+            Vector3 velocity = dir * (isSprinting ? sprintSpeed : moveSpeed);
+
+            if (shipRb != null)
+            {
+                Vector3 sv = shipRb.GetPointVelocity(rb.position);
+                velocity.x += sv.x;
+                velocity.z += sv.z;
+            }
+
+            velocity.y = rb.linearVelocity.y;
+            rb.linearVelocity = velocity;
+
+            if (jumpPressed)
+            {
+                jumpPressed = false;
+                if (IsGrounded())
+                {
+                    velocity.y = 0f;
+                    rb.linearVelocity = velocity;
+                    rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                }
+            }
+        }
+
+        private void FindShip()
+        {
+            Rigidbody found = null;
+
+            if (Physics.Raycast(groundCheck.position, Vector3.down, out RaycastHit hit, 2f, groundMask, QueryTriggerInteraction.Ignore))
+            {
+                ShipMovement s = hit.collider.GetComponentInParent<ShipMovement>();
+                if (s != null) found = s.GetComponent<Rigidbody>();
+            }
+
+            if (found != null)
+            {
+                shipRb = found;
+                lastOnShipTime = Time.time;
+            }
+            else if (Time.time - lastOnShipTime > 0.25f)
+            {
+                shipRb = null;
+            }
+        }
+
         private bool IsGrounded()
         {
-            return Physics.CheckSphere(groundCheck.position, groundRadius, groundMask);
+            return Physics.CheckSphere(groundCheck.position, groundRadius, groundMask, QueryTriggerInteraction.Ignore);
         }
     }
 }
