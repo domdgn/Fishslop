@@ -9,10 +9,17 @@ namespace FishSlop
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float sprintSpeed = 8f;
         [SerializeField] private float jumpForce = 6f;
+        [SerializeField] private float jumpClampCooldown = 0.2f;
+        private float lastJumpTime = -10f;
 
+        [SerializeField] private float maxSlopeAngle = 50f;
         [SerializeField] private Transform groundCheck;
         [SerializeField] private float groundRadius = 0.2f;
         [SerializeField] private LayerMask groundMask;
+
+        [SerializeField] private float wallCheckDistance = 0.6f;
+        [SerializeField] private float lowCheckHeight = 0.3f;
+        [SerializeField] private float highCheckHeight = 1.0f;
 
         private Rigidbody rb;
 
@@ -26,7 +33,7 @@ namespace FishSlop
         private float lastOnShipTime;
         private Vector3 lastShipPosition;
         private Quaternion lastShipRotation;
-
+        private Vector3 groundNormal = Vector3.up;
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
@@ -67,26 +74,75 @@ namespace FishSlop
         [TargetRpc]
         public void TargetClearMovementInput(NetworkConnectionToClient conn) => ClearMovementInput();
 
+        private Vector3 BlockWalls(Vector3 vel)
+        {
+            Vector3 flat = new Vector3(vel.x, 0f, vel.z);
+            if (flat.sqrMagnitude < 0.0001f) return vel;
+
+            Vector3 dir = flat.normalized;
+
+            vel = CheckWallAtHeight(vel, dir, lowCheckHeight);
+            flat = new Vector3(vel.x, 0f, vel.z);
+            if (flat.sqrMagnitude < 0.0001f) return vel;
+
+            return CheckWallAtHeight(vel, flat.normalized, highCheckHeight);
+        }
+
+        private Vector3 CheckWallAtHeight(Vector3 vel, Vector3 dir, float height)
+        {
+            Vector3 origin = groundCheck.position + Vector3.up * height;
+
+            if (Physics.Raycast(origin, dir, out RaycastHit hit, wallCheckDistance,
+                groundMask, QueryTriggerInteraction.Ignore))
+            {
+                if (Vector3.Angle(hit.normal, Vector3.up) > maxSlopeAngle)
+                {
+                    Vector3 wallNormal = new Vector3(hit.normal.x, 0f, hit.normal.z).normalized;
+                    Vector3 flat = new Vector3(vel.x, 0f, vel.z);
+
+                    if (Vector3.Dot(flat, wallNormal) < 0f)
+                    {
+                        flat = Vector3.ProjectOnPlane(flat, wallNormal);
+                        vel.x = flat.x;
+                        vel.z = flat.z;
+                    }
+                }
+            }
+            return vel;
+        }
+
         private void FixedUpdate()
         {
             if (!isOwned) return;
 
             FindShip();
 
+            bool grounded = IsGrounded();
+
             rb.MoveRotation(Quaternion.Euler(0f, Yaw, 0f));
 
             Vector3 dir = Quaternion.Euler(0f, Yaw, 0f) * new Vector3(moveInput.x, 0f, moveInput.y);
+            if (grounded) dir = Vector3.ProjectOnPlane(dir, groundNormal).normalized * dir.magnitude;
             Vector3 velocity = dir * (isSprinting ? sprintSpeed : moveSpeed);
+
+            velocity = BlockWalls(velocity);
 
             if (shipRb != null)
             {
                 Vector3 sv = ship.GetSyncedPointVelocity(rb.position);
-                //Debug.LogWarning($"Ship velocity: {sv} | Player velocity: {velocity}");
                 velocity.x += sv.x;
                 velocity.z += sv.z;
             }
 
-            velocity.y = rb.linearVelocity.y;
+            bool justJumped = Time.time - lastJumpTime < jumpClampCooldown;
+
+            float y = rb.linearVelocity.y;
+            if (grounded && !justJumped && y > 0f)
+            {
+                y = 0f;
+            }
+
+            velocity.y = y;
             rb.linearVelocity = velocity;
 
             if (jumpPressed)
@@ -94,6 +150,7 @@ namespace FishSlop
                 jumpPressed = false;
                 if (IsGrounded())
                 {
+                    lastJumpTime = Time.time;
                     velocity.y = 0f;
                     rb.linearVelocity = velocity;
                     rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -135,7 +192,16 @@ namespace FishSlop
 
         private bool IsGrounded()
         {
-            return Physics.CheckSphere(groundCheck.position, groundRadius, groundMask, QueryTriggerInteraction.Ignore);
+            Vector3 origin = groundCheck.position + Vector3.up * 0.1f;
+
+            if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 0.3f, groundMask, QueryTriggerInteraction.Ignore))
+            {
+                groundNormal = hit.normal;
+                return Vector3.Angle(hit.normal, Vector3.up) <= maxSlopeAngle;
+            }
+
+            groundNormal = Vector3.up;
+            return false;
         }
     }
 }

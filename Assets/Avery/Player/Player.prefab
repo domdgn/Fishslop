@@ -460,11 +460,16 @@ MonoBehaviour:
   moveSpeed: 3
   sprintSpeed: 5
   jumpForce: 6
+  jumpClampCooldown: 0.1
+  maxSlopeAngle: 70
   groundCheck: {fileID: 8931556320887681391}
   groundRadius: 0.15
   groundMask:
     serializedVersion: 2
     m_Bits: 1032
+  wallCheckDistance: 0.6
+  lowCheckHeight: 0.3
+  highCheckHeight: 1
 --- !u!114 &3063682664911600883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,7 +593,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  fallYLevel: -10
+  fallYLevel: -8
 --- !u!1 &8608512792439042378
 GameObject:
   m_ObjectHideFlags: 0
