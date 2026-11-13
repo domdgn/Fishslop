@@ -55,10 +55,10 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  topSpeed: 10
-  acceleration: 3
+  topSpeed: 15
+  acceleration: 2
   deceleration: 2
-  steerSpeed: 5
+  steerSpeed: 12
   syncedVelocity: {x: 0, y: 0, z: 0}
   syncedAngularVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &1639952658001065832
