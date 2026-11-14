@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b51ee78dcb2c0bd4c872dc60bf40299a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Fonts/DebugPanel-SpaceMono-Bold SDF.asset
+  uploadId: 778636

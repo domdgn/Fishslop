@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 999e91762d73cc84980486741aa276a0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Popups/ActionsContainerPopup.prefab
+  uploadId: 778636

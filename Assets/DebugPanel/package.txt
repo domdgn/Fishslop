@@ -1,0 +1,11 @@
+{
+  "name": "com.guillemunity.debugpanel",
+  "version": "1.3.1",
+  "displayName": "Debug Panel",
+  "description": "Debug Panel to quickly add debug capabilities to a game",
+  "unity": "2019.4",
+  "author": {
+    "name": "Guillem Sunyer",
+    "email": "guillemtools@gmail.com"
+  }
+}

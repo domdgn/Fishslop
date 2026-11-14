@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 4eba8b184ffa4b7393bcf5572cb0c065
+timeCreated: 1742061702
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Logic/PopupsLogic.cs
+  uploadId: 778636

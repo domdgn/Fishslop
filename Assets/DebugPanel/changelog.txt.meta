@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6c077752d94307a4cb865b6fbf98aaeb
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/changelog.txt
+  uploadId: 778636

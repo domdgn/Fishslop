@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 91d995c5c85487e4daccb4efe927526e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Views/ListSelectorPopupElementView.prefab
+  uploadId: 778636

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 26e5321bb340da948a85c948493e66f0
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Scenes/DebugPanel.ActionsGroup.unity
+  uploadId: 778636

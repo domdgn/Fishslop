@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 87cff440c11849b6ba45a50690814a8f
+timeCreated: 1744659786
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/DebugActions/Widgets/ButtonStringSelectorDebugActionWidget.cs
+  uploadId: 778636

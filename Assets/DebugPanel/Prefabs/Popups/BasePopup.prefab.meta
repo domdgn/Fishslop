@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: de101cd62ee2f09428f320ab381505a7
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Popups/BasePopup.prefab
+  uploadId: 778636

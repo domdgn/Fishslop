@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f0a652467e09acc46ba3c08902f50fba
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Editor/DebugPanel.Editor.asmdef
+  uploadId: 778636

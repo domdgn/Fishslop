@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 31609395bdb848445b1e1a4210e9a422
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Views/SectionPopupElementView.prefab
+  uploadId: 778636

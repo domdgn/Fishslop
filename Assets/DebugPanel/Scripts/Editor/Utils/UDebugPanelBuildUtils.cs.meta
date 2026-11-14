@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 7d7ce12c470344be819f941fbcc99226
+timeCreated: 1744124945
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Editor/Utils/UDebugPanelBuildUtils.cs
+  uploadId: 778636

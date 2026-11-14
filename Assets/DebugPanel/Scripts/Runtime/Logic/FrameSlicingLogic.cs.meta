@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 1e8e3e70c5a142c5887d1168cb2a53cf
+timeCreated: 1744465650
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Logic/FrameSlicingLogic.cs
+  uploadId: 778636

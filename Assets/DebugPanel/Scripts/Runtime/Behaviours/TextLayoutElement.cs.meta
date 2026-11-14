@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 4a250eaa7b314f429e15b377cabb1893
+timeCreated: 1735570512
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Behaviours/TextLayoutElement.cs
+  uploadId: 778636

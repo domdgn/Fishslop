@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d39e9e2ccc712804fad6a00959c21699
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Widgets/BaseToggleWidget.prefab
+  uploadId: 778636

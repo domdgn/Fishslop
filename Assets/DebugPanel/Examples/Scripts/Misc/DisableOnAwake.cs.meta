@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: a13b13ed447c4a0c861c4a2ddc5605bd
+timeCreated: 1743205628
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Scripts/Misc/DisableOnAwake.cs
+  uploadId: 778636

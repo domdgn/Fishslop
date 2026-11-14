@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: bbebc56d42354b52bfa2a65dac28b945
+timeCreated: 1719845427
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Behaviours/FlexibleLayoutGroup.cs
+  uploadId: 778636

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: d4bd2522d3fd4a1ca24988a919b1561b
+timeCreated: 1735815550
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Behaviours/SafeAreaHelper.cs
+  uploadId: 778636

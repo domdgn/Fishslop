@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 49cb1d26388e4564902020ae83de2ff6
+timeCreated: 1724495698
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Popups/ActionsContainerPopup.cs
+  uploadId: 778636

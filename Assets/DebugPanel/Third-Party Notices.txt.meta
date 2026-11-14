@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 46780296e1aac9243afd77ec67550117
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Third-Party Notices.txt
+  uploadId: 778636

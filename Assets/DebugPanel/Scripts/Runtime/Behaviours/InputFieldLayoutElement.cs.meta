@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 8d96b257725d40fa926bcdce4ed0216f
+timeCreated: 1744650931
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Behaviours/InputFieldLayoutElement.cs
+  uploadId: 778636

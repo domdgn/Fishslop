@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a8b61bae5a17bb24b94609744bc736f3
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Scenes/DebugPanel.ControllerNavigation.unity
+  uploadId: 778636

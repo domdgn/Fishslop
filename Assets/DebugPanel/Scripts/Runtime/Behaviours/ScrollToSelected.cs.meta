@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 2def7afa721f4babaf794831242b8552
+timeCreated: 1726135285
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Behaviours/ScrollToSelected.cs
+  uploadId: 778636

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 8c421717bd694367b8b639eaf208ec05
+timeCreated: 1742728181
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Scripts/Examples/DebugPanelCustomPopupExample.cs
+  uploadId: 778636

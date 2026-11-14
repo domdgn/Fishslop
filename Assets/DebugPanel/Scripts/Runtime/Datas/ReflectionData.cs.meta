@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 2fab052c7a644339adad5daf79d25f76
+timeCreated: 1743444046
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Datas/ReflectionData.cs
+  uploadId: 778636

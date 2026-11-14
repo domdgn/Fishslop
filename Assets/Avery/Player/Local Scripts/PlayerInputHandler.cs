@@ -44,7 +44,7 @@ namespace FishSlop
             if (boop != null) boop.SetActive(false);
 
             playerInput.actions.FindActionMap("Player").Enable();
-            playerInput.SwitchCurrentActionMap("Player");
+            SwitchToPlayer();
         }
 
         public override void OnStopAuthority()
@@ -52,6 +52,22 @@ namespace FishSlop
             playerInput.enabled = false;
 
             if (look != null) look.DisableLook();
+        }
+
+        public void SwitchToUI()
+        {
+            if (!isOwned) return;
+            playerInput.SwitchCurrentActionMap("UI");
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
+        public void SwitchToPlayer()
+        {
+            if (!isOwned) return;
+            playerInput.SwitchCurrentActionMap("Player");
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         public void OnMove(InputValue value)
@@ -83,6 +99,22 @@ namespace FishSlop
             if (!isOwned || !value.isPressed) return;
             Debug.Log("Use Input called");
             if (interaction != null) interaction.DoInteract();
+        }
+
+        public void OnDebugToggle(InputValue value)
+        {
+            if (!isOwned || !value.isPressed) return;
+            Debug.Log("Debug Toggle Input called");
+            DebugMenuSingleton.Instance.ToggleDebugMenu();
+
+            if (playerInput.currentActionMap.name == "UI")
+            {
+                SwitchToPlayer();
+            }
+            else
+            {
+                SwitchToUI();
+            }
         }
 
         public override void OnStopServer()

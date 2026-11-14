@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 49c191a4fbd18fb44bee21d6343ec6ba
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Popups/LargeTextPopup.prefab
+  uploadId: 778636

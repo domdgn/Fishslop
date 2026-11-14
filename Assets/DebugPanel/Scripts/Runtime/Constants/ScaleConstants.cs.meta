@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 90edcbb65cbd47298df21fde08ca2e2c
+timeCreated: 1744892652
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Constants/ScaleConstants.cs
+  uploadId: 778636

@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 69988918f2be4751860eb3d21645a73f
+timeCreated: 1720516616
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Popups/LargeTextPopup.cs
+  uploadId: 778636

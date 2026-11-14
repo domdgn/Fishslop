@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cca9fc337de894044945c7e21369ce00
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Widgets/IntSelectorWidget.prefab
+  uploadId: 778636

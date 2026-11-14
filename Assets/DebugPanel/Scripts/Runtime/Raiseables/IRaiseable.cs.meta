@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 7c84b277566a447bbebf01f2d6218cff
+timeCreated: 1724403182
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Raiseables/IRaiseable.cs
+  uploadId: 778636

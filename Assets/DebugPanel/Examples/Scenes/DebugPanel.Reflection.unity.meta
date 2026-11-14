@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8dd267454747b214e9e9a0b2214eeccc
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Scenes/DebugPanel.Reflection.unity
+  uploadId: 778636

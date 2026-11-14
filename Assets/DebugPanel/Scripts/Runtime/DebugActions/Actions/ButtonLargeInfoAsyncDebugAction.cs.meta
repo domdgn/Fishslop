@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 511fe6dd2edf4582aecf376dff06f64d
+timeCreated: 1724099181
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/DebugActions/Actions/ButtonLargeInfoAsyncDebugAction.cs
+  uploadId: 778636

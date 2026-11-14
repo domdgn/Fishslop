@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2c7857d7f46f59b05a3076eb0cba0b30
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Widgets/ActionGroupWidget.prefab
+  uploadId: 778636

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e90b143ff08ba1042bc4194186b66b41
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Documentation.pdf
+  uploadId: 778636

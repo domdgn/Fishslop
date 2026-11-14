@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 755fc510efcf5c54086bfe589be867ee
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Widgets/ButtonListInputWidget.prefab
+  uploadId: 778636

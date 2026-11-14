@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 34249b58088049e6bf0b4f3b503666f3
+timeCreated: 1742840293
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Scripts/Input/SpawnAppropiateInputSystem.cs
+  uploadId: 778636

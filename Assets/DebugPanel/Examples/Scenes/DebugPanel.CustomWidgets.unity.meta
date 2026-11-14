@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 195ed00014bedbd4ba8c072321348808
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Scenes/DebugPanel.CustomWidgets.unity
+  uploadId: 778636

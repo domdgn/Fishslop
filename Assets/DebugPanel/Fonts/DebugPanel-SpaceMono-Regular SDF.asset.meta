@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 42d01cd7a6919e846bd0fc5fb695cb88
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Fonts/DebugPanel-SpaceMono-Regular SDF.asset
+  uploadId: 778636

@@ -1,5 +1,6 @@
 using UnityEngine;
 using Mirror;
+using UnityEngine.InputSystem;
 
 namespace FishSlop
 {
@@ -20,6 +21,8 @@ namespace FishSlop
         [SerializeField] private float lowCheckHeight = 0.3f;
         [SerializeField] private float highCheckHeight = 1.0f;
 
+        [SerializeField] private float flySpeed = 15f;
+        public bool Flying { get; private set; }
         private Rigidbody rb;
 
         private Vector2 moveInput;
@@ -113,6 +116,12 @@ namespace FishSlop
         private void FixedUpdate()
         {
             if (!isOwned) return;
+
+            if (Flying)
+            {
+                FlyMove();
+                return;
+            }
 
             FindShip();
 
@@ -221,6 +230,33 @@ namespace FishSlop
 
             groundNormal = Vector3.up;
             return false;
+        }
+
+        // DEBUG STUFFS
+        public void SetFly(bool on)
+        {
+            Flying = on;
+            rb.useGravity = !on;
+            if (on) ClearMovementInput();
+        }
+
+        private void FlyMove()
+        {
+            rb.MoveRotation(Quaternion.Euler(0f, Yaw, 0f));
+
+            Vector3 dir = Quaternion.Euler(0f, Yaw, 0f) * new Vector3(moveInput.x, 0f, moveInput.y);
+
+            float vert = 0f;
+            var kb = Keyboard.current;
+            if (kb != null)
+            {
+                if (kb.spaceKey.isPressed) vert += 1f;
+                if (kb.leftCtrlKey.isPressed) vert -= 1f;
+            }
+
+            float speed = isSprinting ? flySpeed * 2f : flySpeed;
+            rb.linearVelocity = new Vector3(dir.x * speed, vert * speed, dir.z * speed);
+            jumpPressed = false;
         }
     }
 }

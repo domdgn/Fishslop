@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 57389fe88a224edaa89549bf6c7779b0
+timeCreated: 1744146118
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Logic/PreviousSectionLogic.cs
+  uploadId: 778636

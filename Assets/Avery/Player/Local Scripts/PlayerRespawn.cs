@@ -27,7 +27,7 @@ namespace FishSlop
         }
 
         [Command]
-        private void CmdRequestRespawn()
+        public void CmdRequestRespawn()
         {
             GameObject respawnObject = GameObject.FindGameObjectWithTag("Respawn");
 

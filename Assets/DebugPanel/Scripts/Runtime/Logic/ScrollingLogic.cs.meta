@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 620386a33fc74260809ee0f8b8471b9d
+timeCreated: 1742144802
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Logic/ScrollingLogic.cs
+  uploadId: 778636

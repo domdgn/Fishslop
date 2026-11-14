@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 907b01b0ed9c4763b1bc7e28b315ba2d
+timeCreated: 1742144889
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Logic/ControllerNavigationLogic.cs
+  uploadId: 778636

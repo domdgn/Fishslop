@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 17b1056396c56af41b689b2adfacd8c2
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Resources/UDebugPanel.prefab
+  uploadId: 778636

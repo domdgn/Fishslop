@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 66301cdd9da42a549813cfa5d9f569a4
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Prefabs/Widgets/LongSelectorWidget.prefab
+  uploadId: 778636

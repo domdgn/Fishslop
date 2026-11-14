@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 21d2410ef2ab6994eb8e12303d458d05
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Examples/Prefabs/CustomPopups/CustomExamplePopup.prefab
+  uploadId: 778636

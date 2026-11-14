@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 7048361b308a4323b98fd1d8801103f9
+timeCreated: 1742840537
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Behaviours/DebugPanelToggleBehaviour.cs
+  uploadId: 778636

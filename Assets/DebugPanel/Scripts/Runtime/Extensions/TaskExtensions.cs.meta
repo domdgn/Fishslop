@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 62ed70784c0c45a995e84caf41acc544
+timeCreated: 1725570999
+AssetOrigin:
+  serializedVersion: 1
+  productId: 314259
+  packageName: UDebug Panel - Ingame Debug Tools
+  packageVersion: 1.3.3
+  assetPath: Assets/DebugPanel/Scripts/Runtime/Extensions/TaskExtensions.cs
+  uploadId: 778636
