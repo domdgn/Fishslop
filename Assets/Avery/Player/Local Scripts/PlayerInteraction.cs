@@ -6,7 +6,7 @@ namespace FishSlop
 {
     public class PlayerInteraction : NetworkBehaviour
     {
-        [SerializeField] private float interactionDistance = 3f;
+        public float interactionDistance = 3f;
         [SerializeField] private LayerMask interactMask;
 
         public Transform cameraPivot;
@@ -47,14 +47,14 @@ namespace FishSlop
         }
         private string GetRelativePath(Transform child, Transform parent)
         {
-            string path = child.name;
+            if (child == parent) return "";
 
+            string path = child.name;
             while (child.parent != parent)
             {
                 child = child.parent;
                 path = child.name + "/" + path;
             }
-
             return path;
         }
 
@@ -77,7 +77,7 @@ namespace FishSlop
         {
             if (target == null) return;
 
-            Transform child = target.transform.Find(path);
+            Transform child = string.IsNullOrEmpty(path) ? target.transform : target.transform.Find(path);
             if (child == null) return;
 
             IInteractable interactable = child.GetComponent<IInteractable>();

@@ -14,7 +14,7 @@ namespace FishSlop
         private Rigidbody rb;
         private SailHandler sailHandler;
         private float steerInput;
-        private Transform rotatePoint;
+        public Transform rotatePoint;
 
         [SyncVar]
         public Vector3 syncedVelocity;

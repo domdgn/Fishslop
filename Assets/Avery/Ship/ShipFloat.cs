@@ -4,13 +4,14 @@ using UnityEngine;
 namespace FishSlop
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class ShipFloat : NetworkBehaviour
+    public class ObjectFloat : NetworkBehaviour
     {
         [SerializeField] private Collider hullCollider;
         [SerializeField] private float restDepth = 0.5f;
         [SerializeField] private float damping = 0.4f;
 
         private Rigidbody rb;
+        private Grabbable grabbable;
         private Vector3[] floatPoints = new Vector3[4];
         private float strength;
         private float dampingForce;
@@ -19,6 +20,7 @@ namespace FishSlop
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
+            grabbable = GetComponent<Grabbable>();
             if (hullCollider == null) hullCollider = GetComponent<Collider>();
         }
 
@@ -35,7 +37,6 @@ namespace FishSlop
             strength = rb.mass * Physics.gravity.magnitude / (floatPoints.Length * restDepth);
             dampingForce = damping * 2f * Mathf.Sqrt(strength * rb.mass / floatPoints.Length);
 
-            Debug.Log($"ShipFloat ready. bounds center {b.center}, size {b.size}, strength {strength:F0}");
             ready = true;
         }
 
@@ -43,6 +44,7 @@ namespace FishSlop
         private void FixedUpdate()
         {
             if (!ready || WaterWaves.Instance == null) return;
+            if (grabbable != null && grabbable.IsHeld) return;
 
             float t = (float)NetworkTime.time;
 

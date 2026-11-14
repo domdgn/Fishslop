@@ -84,5 +84,10 @@ namespace FishSlop
             Debug.Log("Use Input called");
             if (interaction != null) interaction.DoInteract();
         }
+
+        public override void OnStopServer()
+        {
+            Destroy(gameObject);
+        }
     }
 }

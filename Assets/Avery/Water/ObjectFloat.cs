@@ -1,52 +1,52 @@
-using System.Collections.Generic;
-using UnityEngine;
-using Mirror;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using Mirror;
 
-namespace FishSlop
-{
-    [RequireComponent(typeof(Rigidbody))]
-    public class ObjectFloat : NetworkBehaviour
-    {
-        public List<Transform> floatTransforms = new List<Transform>();
+//namespace FishSlop
+//{
+//    [RequireComponent(typeof(Rigidbody))]
+//    public class ObjectFloat : NetworkBehaviour
+//    {
+//        public List<Transform> floatTransforms = new List<Transform>();
 
-        private Rigidbody rb;
+//        private Rigidbody rb;
 
-        private void Awake()
-        {
-            rb = GetComponent<Rigidbody>();
-        }
+//        private void Awake()
+//        {
+//            rb = GetComponent<Rigidbody>();
+//        }
 
-        [ServerCallback]
-        private void FixedUpdate()
-        {
-            if (floatTransforms.Count < 3) return;
+//        [ServerCallback]
+//        private void FixedUpdate()
+//        {
+//            if (floatTransforms.Count < 3) return;
 
-            Vector3 centre = Vector3.zero;
+//            Vector3 centre = Vector3.zero;
 
-            foreach (Transform t in floatTransforms) centre += t.position;
+//            foreach (Transform t in floatTransforms) centre += t.position;
 
-            centre /= floatTransforms.Count;
+//            centre /= floatTransforms.Count;
 
-            Vector3 normal = Vector3.zero;
+//            Vector3 normal = Vector3.zero;
 
-            for (int i = 0; i < floatTransforms.Count; i++)
-            {
-                Vector3 a = floatTransforms[i].position - centre;
-                Vector3 b = floatTransforms[(i + 1) % floatTransforms.Count].position - centre;
+//            for (int i = 0; i < floatTransforms.Count; i++)
+//            {
+//                Vector3 a = floatTransforms[i].position - centre;
+//                Vector3 b = floatTransforms[(i + 1) % floatTransforms.Count].position - centre;
 
-                normal += Vector3.Cross(a, b);
-            }
+//                normal += Vector3.Cross(a, b);
+//            }
 
-            if (normal.sqrMagnitude < 0.0001f) return;
+//            if (normal.sqrMagnitude < 0.0001f) return;
 
-            normal.Normalize();
+//            normal.Normalize();
 
-            if (normal.y < 0) normal = -normal;
+//            if (normal.y < 0) normal = -normal;
 
-            Quaternion targetRotation = Quaternion.FromToRotation(transform.up, normal) * rb.rotation;
+//            Quaternion targetRotation = Quaternion.FromToRotation(transform.up, normal) * rb.rotation;
 
-            rb.MovePosition(centre);
-            rb.MoveRotation(targetRotation);
-        }
-    }
-}
+//            rb.MovePosition(centre);
+//            rb.MoveRotation(targetRotation);
+//        }
+//    }
+//}

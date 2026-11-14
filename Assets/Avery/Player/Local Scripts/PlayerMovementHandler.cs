@@ -14,7 +14,6 @@ namespace FishSlop
 
         [SerializeField] private float maxSlopeAngle = 50f;
         [SerializeField] private Transform groundCheck;
-        [SerializeField] private float groundRadius = 0.2f;
         [SerializeField] private LayerMask groundMask;
 
         [SerializeField] private float wallCheckDistance = 0.6f;
@@ -127,11 +126,11 @@ namespace FishSlop
 
             velocity = BlockWalls(velocity);
 
-            if (shipRb != null)
-            {
-                Vector3 sv = ship.GetSyncedPointVelocity(rb.position);
-                velocity.x += sv.x;
-                velocity.z += sv.z;
+            if(shipRb != null)
+{
+                Vector3 carry = ShipCarryVelocity();
+                velocity.x += carry.x;
+                velocity.z += carry.z;
             }
 
             bool justJumped = Time.time - lastJumpTime < jumpClampCooldown;
@@ -156,6 +155,26 @@ namespace FishSlop
                     rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 }
             }
+        }
+
+        private Vector3 ShipCarryVelocity()
+        {
+            Vector3 p = rb.position;
+
+            Vector3 sv = ship.GetSyncedPointVelocity(p);
+
+            float omegaY = ship.syncedAngularVelocity.y; // rad/s
+            if (Mathf.Abs(omegaY) < 0.0001f) return sv;
+
+            float dt = Time.fixedDeltaTime;
+            Vector3 pivot = ship.rotatePoint.position;
+            Vector3 r = p - pivot;
+            r.y = 0f;
+
+            Vector3 tangent = Vector3.Cross(new Vector3(0f, omegaY, 0f), r);
+            Vector3 arcDisp = Quaternion.AngleAxis(omegaY * Mathf.Rad2Deg * dt, Vector3.up) * r - r;
+
+            return sv + (arcDisp / dt - tangent);
         }
 
         private void FindShip()

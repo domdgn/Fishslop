@@ -55,7 +55,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  topSpeed: 15
+  topSpeed: 30
   acceleration: 2
   deceleration: 2
   steerSpeed: 12
