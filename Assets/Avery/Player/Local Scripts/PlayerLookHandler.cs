@@ -6,12 +6,12 @@ namespace FishSlop
     public class PlayerLookHandler : NetworkBehaviour
     {
         [SerializeField] private Transform cameraPivot;
-        [SerializeField] private Transform headPivot;
+        [SerializeField] public Transform headPivot;
 
         [SerializeField] private float lookSens = 0.2f;
         [SerializeField] private float maxLookY = 80f;
 
-        [SyncVar] private float syncedPitch;
+        [SyncVar] public float syncedPitch;
         private float pitch;
 
         private PlayerMovementHandler movement;

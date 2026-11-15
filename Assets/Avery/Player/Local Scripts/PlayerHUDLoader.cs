@@ -1,0 +1,35 @@
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+namespace FishSlop
+{
+    public class PlayerHUDLoader : MonoBehaviour
+    {
+        [SerializeField] private string uiSceneName = "GameplayUI";
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void Start()
+        {
+            LoadUI();
+        }
+
+        private void LoadUI()
+        {
+            if (!SceneManager.GetSceneByName(uiSceneName).isLoaded) SceneManager.LoadSceneAsync(uiSceneName, LoadSceneMode.Additive);
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == uiSceneName) Debug.Log("Gameplay UI loaded!");
+        }
+    }
+}

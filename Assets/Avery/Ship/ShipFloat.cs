@@ -9,6 +9,8 @@ namespace FishSlop
         [SerializeField] private Collider hullCollider;
         [SerializeField] private float restDepth = 0.5f;
         [SerializeField] private float damping = 0.4f;
+        [SerializeField] private bool simulateOnClients = false;
+        [SerializeField] private float horizontalDrag = 2f;
 
         private Rigidbody rb;
         private Grabbable grabbable;
@@ -24,7 +26,7 @@ namespace FishSlop
             if (hullCollider == null) hullCollider = GetComponent<Collider>();
         }
 
-        public override void OnStartServer()
+        private void InitialiseBuoyancy()
         {
             Physics.SyncTransforms();
 
@@ -40,10 +42,22 @@ namespace FishSlop
             ready = true;
         }
 
-        [ServerCallback]
+        public override void OnStartServer()
+        {
+            InitialiseBuoyancy();
+        }
+
+        public override void OnStartClient()
+        {
+            if (simulateOnClients && !isServer) InitialiseBuoyancy();
+        }
+
         private void FixedUpdate()
         {
             if (!ready || WaterWaves.Instance == null) return;
+
+            if (!isServer && !simulateOnClients) return;
+
             if (grabbable != null && grabbable.IsHeld) return;
 
             float t = (float)NetworkTime.time;
@@ -52,10 +66,21 @@ namespace FishSlop
             {
                 Vector3 point = transform.TransformPoint(floatPoint);
                 float depth = WaterWaves.Instance.GetHeight(point, t) - point.y;
+
                 if (depth <= 0f) continue;
 
-                float force = depth * strength - rb.GetPointVelocity(point).y * dampingForce;
+                Vector3 pointVelocity = rb.GetPointVelocity(point);
+
+                float force = depth * strength - pointVelocity.y * dampingForce;
+
                 if (force > 0f) rb.AddForceAtPosition(Vector3.up * force, point);
+
+                float submersion = Mathf.Clamp01(depth / restDepth);
+
+                Vector3 horizontalVelocity = Vector3.ProjectOnPlane(pointVelocity, Vector3.up);
+                Vector3 dragForce = -horizontalVelocity * horizontalDrag * submersion;
+
+                rb.AddForceAtPosition(dragForce, point);
             }
         }
     }

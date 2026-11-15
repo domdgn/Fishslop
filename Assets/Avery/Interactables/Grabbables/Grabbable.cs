@@ -7,6 +7,7 @@ namespace FishSlop
     {
         [SerializeField] private float followStrength = 15f;
         [SerializeField] private float maxSpeed = 12f;
+        [SerializeField] private float holdDistance = 1.5f;
 
         [SyncVar(hook = nameof(OnHolderChanged))]
         private NetworkIdentity holder;
@@ -43,10 +44,20 @@ namespace FishSlop
         [Server]
         public void Follow(Vector3 target)
         {
-            Vector3 vel = (target - rb.position) * followStrength;
+            PlayerLookHandler look = holder.GetComponent<PlayerLookHandler>();
+            Vector3 pivot = look.headPivot.position;
+
+            float pitch = look != null ? look.syncedPitch : 0f;
+
+            Quaternion rotation = Quaternion.Euler(pitch, holder.transform.eulerAngles.y, 0f );
+
+            Vector3 desiredPosition = pivot + rotation * Vector3.forward * holdDistance;
+
+            Vector3 vel = (desiredPosition - rb.position) * followStrength;
             rb.linearVelocity = Vector3.ClampMagnitude(vel, maxSpeed);
+
             rb.angularVelocity = Vector3.zero;
-            rb.rotation = holder.transform.rotation;
+            rb.rotation = rotation;
         }
 
         private void OnHolderChanged(NetworkIdentity oldHolder, NetworkIdentity newHolder)

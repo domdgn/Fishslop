@@ -1,5 +1,6 @@
 using Mirror;
 using Mirror.Examples.Benchmark;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace FishSlop
@@ -15,6 +16,9 @@ namespace FishSlop
         private SailHandler sailHandler;
         private float steerInput;
         public Transform rotatePoint;
+        public Transform wheel;
+
+        private ShipHealth shipHealth;
 
         [SyncVar]
         public Vector3 syncedVelocity;
@@ -25,6 +29,7 @@ namespace FishSlop
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
+            shipHealth = GetComponent<ShipHealth>();
             rb.interpolation = RigidbodyInterpolation.Interpolate;
             rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             rb.useGravity = true;
@@ -91,15 +96,15 @@ namespace FishSlop
             float speedFactor = Mathf.Clamp01(flatVelocity.magnitude / topSpeed);
             float angle = steerInput * steerSpeed * speedFactor * Time.fixedDeltaTime;
 
-            Quaternion rotation = Quaternion.Euler(0f, angle, 0f);
-
-            Vector3 offset = rb.position - rotatePoint.position;
-
-            rb.MovePosition(rotatePoint.position + rotation * offset);
-            rb.MoveRotation(rotation * rb.rotation);
+            rb.AddTorque(Vector3.up * steerInput * steerSpeed * speedFactor, ForceMode.Acceleration);
 
             syncedVelocity = rb.linearVelocity;
             syncedAngularVelocity = rb.angularVelocity;
+
+            if (wheel != null) // doesnt turn like a reeal ship yet with the locking or whatever but its okay
+            {
+                wheel.Rotate(Vector3.forward, steerInput * 100f * Time.fixedDeltaTime, Space.Self);
+            }
         }
 
         [ServerCallback]
@@ -111,8 +116,10 @@ namespace FishSlop
             }
 
             float impactSpeed = collision.relativeVelocity.magnitude;
+            float damageTaken = impactSpeed * shipHealth.impactMulti;
+            shipHealth.TakeDamage(damageTaken);
 
-            Debug.Log($"Ship crashed into {collision.gameObject.name} / Impact speed: {impactSpeed}");
+            Debug.Log($"Ship crashed into {collision.gameObject.name} / Impact speed: {impactSpeed} / Damage: {damageTaken}");
         }
     }
 }
