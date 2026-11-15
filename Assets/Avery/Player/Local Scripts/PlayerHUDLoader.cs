@@ -6,6 +6,7 @@ namespace FishSlop
     public class PlayerHUDLoader : MonoBehaviour
     {
         [SerializeField] private string uiSceneName = "GameplayUI";
+        [SerializeField] private string pauseSceneName = "PauseUI";
 
         private void OnEnable()
         {
@@ -24,12 +25,17 @@ namespace FishSlop
 
         private void LoadUI()
         {
-            if (!SceneManager.GetSceneByName(uiSceneName).isLoaded) SceneManager.LoadSceneAsync(uiSceneName, LoadSceneMode.Additive);
+            if (!SceneManager.GetSceneByName(uiSceneName).isLoaded)
+            {
+                SceneManager.LoadSceneAsync(uiSceneName, LoadSceneMode.Additive);
+                SceneManager.LoadSceneAsync(pauseSceneName, LoadSceneMode.Additive);
+            }
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             if (scene.name == uiSceneName) Debug.Log("Gameplay UI loaded!");
+            if (scene.name == pauseSceneName) Debug.Log("Pause UI loaded!");
         }
     }
 }

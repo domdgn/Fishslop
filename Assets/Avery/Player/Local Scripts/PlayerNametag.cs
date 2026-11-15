@@ -10,48 +10,99 @@ namespace FishSlop
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private GameObject nameTag;
 
-        private const ulong DeveloperSteamID = 76561198406385504;
+        private const ulong developerSteamID = 76561198406385504;
+        private const string devName = "[DEV] avery 🦴";
+
+        private static readonly ulong[] playtesterSteamIDs =
+        {
+            76561198879304215,
+            76561198978020021,
+        };
+        private const string playtesterPrefix = "[TESTER] ";
+
+        private const int maxNameLength = 24;
+
+        private static readonly Color devColour = new Color(1f, 0.5f, 0.8f);
+        private static readonly Color playtesterColour = new Color(0.5f, 0.9f, 1f);
 
         [SyncVar(hook = nameof(OnNameChanged))]
-        private string playerName;
+        private string playerName = "";
 
         [SyncVar(hook = nameof(OnColourChanged))]
         private Color nameTagColour = Color.white;
+        public string PlayerName => playerName;
+
+        public override void OnStartClient()
+        {
+            ApplyName(playerName);
+            ApplyColour(nameTagColour);
+        }
 
         public override void OnStartLocalPlayer()
         {
-            string persona = SteamFriends.GetPersonaName();
-            bool isDev = SteamUser.GetSteamID().m_SteamID == DeveloperSteamID;
+            if (nameTag != null) nameTag.SetActive(false);
 
-            if (string.IsNullOrEmpty(persona)) persona = "Player " + netId;
+            bool steamReady = SteamManager.Initialized;
 
-            if (isDev) persona = "[DEV] avery 🦴";
+            string persona = steamReady ? SteamFriends.GetPersonaName() : null;
+            if (string.IsNullOrWhiteSpace(persona)) persona = "Player " + netId;
 
-            Color colour = isDev ? Color.pink : Color.white;
+            ulong steamId = steamReady ? SteamUser.GetSteamID().m_SteamID : 0;
 
-            CmdSetName(persona, colour);
+            CmdSetIdentity(persona, steamId);
         }
 
         [Command]
-        private void CmdSetName(string newName, Color colour)
+        private void CmdSetIdentity(string requestedName, ulong steamId)
         {
-            playerName = newName;
-            nameTagColour = colour;
+            bool isDev = steamId == developerSteamID;
+            bool isTester = !isDev && System.Array.IndexOf(playtesterSteamIDs, steamId) >= 0;
+
+            string clean = Sanitise(requestedName);
+            if (clean.Length == 0) clean = "Player " + netId;
+
+            if (isDev)
+            {
+                playerName = devName;
+                nameTagColour = devColour;
+            }
+            else if (isTester)
+            {
+                playerName = playtesterPrefix + clean;
+                nameTagColour = playtesterColour;
+            }
+            else
+            {
+                playerName = clean;
+                nameTagColour = Color.white;
+            }
+
+            if (isClient)
+            {
+                ApplyName(playerName);
+                ApplyColour(nameTagColour);
+            }
         }
 
-        private void OnNameChanged(string oldName, string newName)
+        private static string Sanitise(string s)
         {
-            nameText.text = newName;
+            if (string.IsNullOrEmpty(s)) return "";
+
+            s = s.Replace("<", "").Replace(">", "").Trim();
+            return s.Length > maxNameLength ? s.Substring(0, maxNameLength) : s;
         }
 
-        private void OnColourChanged(Color oldColour, Color newColour)
+        private void OnNameChanged(string oldName, string newName) => ApplyName(newName);
+        private void OnColourChanged(Color oldColour, Color newColour) => ApplyColour(newColour);
+
+        private void ApplyName(string value)
         {
-            nameText.color = newColour;
+            if (nameText != null) nameText.text = value;
         }
 
-        private void Start()
+        private void ApplyColour(Color value)
         {
-            if (isLocalPlayer && nameTag != null) nameTag.SetActive(false);
+            if (nameText != null) nameText.color = value;
         }
     }
 }

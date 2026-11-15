@@ -28,6 +28,7 @@ namespace FishSlop
             }
             else
             {
+                DontDestroyOnLoad(this.gameObject);
                 Instance = this;
             }
         }
@@ -150,19 +151,6 @@ namespace FishSlop
 
         public void LeaveLobby()
         {
-            CSteamID currentOwner = SteamMatchmaking.GetLobbyOwner(new CSteamID(lobbyID));
-            CSteamID local = SteamUser.GetSteamID();
-            
-            var lobby = new CSteamID(lobbyID);
-            List<CSteamID> members = new List<CSteamID>();
-
-            int count = SteamMatchmaking.GetNumLobbyMembers(lobby);
-
-            for (int i = 0; i < count; i++)
-            {
-                members.Add(SteamMatchmaking.GetLobbyMemberByIndex(lobby, i));
-            }
-
             if (lobbyID != 0)
             {
                 SteamMatchmaking.LeaveLobby(new CSteamID(lobbyID));
@@ -174,17 +162,12 @@ namespace FishSlop
                 Debug.LogWarning("Not in a lobby to leave.");
             }
 
-            if (NetworkServer.active && currentOwner == local)
-            {
-                networkManager.StopHost();
-            }
-            else if (NetworkClient.isConnected)
-            {
-                networkManager.StopClient();
-            }
+            if (NetworkServer.active && NetworkClient.isConnected) networkManager.StopHost();
+            else if (NetworkClient.isConnected) networkManager.StopClient();
+            else if (NetworkServer.active) networkManager.StopServer();
 
-            panelSwapper.gameObject.SetActive(true);
-            this.gameObject.SetActive(true);
+            if (panelSwapper != null) panelSwapper.gameObject.SetActive(true);
+            gameObject.SetActive(true);
         }
     }
 }

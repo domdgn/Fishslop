@@ -37,13 +37,17 @@ public class SteamManager : MonoBehaviour {
 	}
 
 	protected bool m_bInitialized = false;
-	public static bool Initialized {
-		get {
-			return Instance.m_bInitialized;
-		}
-	}
+    public static bool Initialized
+    {
+        get
+        {
+            if (s_instance == null)
+                Debug.LogWarning("SteamManager.Initialized read with no instance\n" + System.Environment.StackTrace);
+            return s_instance != null && s_instance.m_bInitialized;
+        }
+    }
 
-	protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
+    protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
 	[AOT.MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
 	protected static void SteamAPIDebugTextHook(int nSeverity, System.Text.StringBuilder pchDebugText) {
@@ -61,8 +65,10 @@ public class SteamManager : MonoBehaviour {
 #endif
 
 	protected virtual void Awake() {
-		// Only one instance of SteamManager at a time!
-		if (s_instance != null) {
+        Debug.Log($"Awake: scene={gameObject.scene.name}, parent={(transform.parent ? transform.parent.name : "none")}, everInit={s_EverInitialized}", this);
+
+        // Only one instance of SteamManager at a time!
+        if (s_instance != null) {
 			Destroy(gameObject);
 			return;
 		}
@@ -151,7 +157,8 @@ public class SteamManager : MonoBehaviour {
 	// Because the SteamManager should be persistent and never disabled or destroyed we can shutdown the SteamAPI here.
 	// Thus it is not recommended to perform any Steamworks work in other OnDestroy functions as the order of execution can not be garenteed upon Shutdown. Prefer OnDisable().
 	protected virtual void OnDestroy() {
-		if (s_instance != this) {
+        Debug.Log($"SteamManager OnDestroy isInstance={s_instance == this}\n{System.Environment.StackTrace}");
+        if (s_instance != this) {
 			return;
 		}
 

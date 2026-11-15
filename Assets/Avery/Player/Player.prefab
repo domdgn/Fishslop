@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6675366703516326380}
   - component: {fileID: 2405829029045691866}
   - component: {fileID: 1954565211791341765}
-  - component: {fileID: 7863850231739446065}
   m_Layer: 5
   m_Name: nameetag
   m_TagString: Untagged
@@ -36,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2, y: 0.5}
+  m_SizeDelta: {x: 5, y: 0.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2405829029045691866
 CanvasRenderer:
@@ -138,23 +137,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &7863850231739446065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4830900471105113713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c4aeb0f99ee3c446ba9a139d977c47c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishSlop.PlayerNameTag
-  syncDirection: 0
-  syncMode: 0
-  syncInterval: 0
-  nameText: {fileID: 1954565211791341765}
-  nameTag: {fileID: 9010977208395643564}
 --- !u!1 &5441273614781010017
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,6 +314,7 @@ GameObject:
   - component: {fileID: 3228358942526768348}
   - component: {fileID: 6837834957285656139}
   - component: {fileID: 8287794852252645593}
+  - component: {fileID: 317612870201274454}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -403,6 +386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishSlop.PlayerHUDLoader
   uiSceneName: GameplayUI
+  pauseSceneName: PauseUI
 --- !u!114 &3723848030789327102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,7 +460,7 @@ MonoBehaviour:
   interactionDistance: 3
   interactMask:
     serializedVersion: 2
-    m_Bits: 2112
+    m_Bits: 3144
   cameraPivot: {fileID: 7034602639271347265}
 --- !u!114 &5639067488498637873
 MonoBehaviour:
@@ -666,6 +650,23 @@ MonoBehaviour:
   damping: 0.1
   simulateOnClients: 1
   horizontalDrag: 2
+--- !u!114 &317612870201274454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6768512443424409419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c4aeb0f99ee3c446ba9a139d977c47c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishSlop.PlayerNameTag
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  nameText: {fileID: 1954565211791341765}
+  nameTag: {fileID: 9010977208395643564}
 --- !u!1 &8608512792439042378
 GameObject:
   m_ObjectHideFlags: 0

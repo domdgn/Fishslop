@@ -20,6 +20,12 @@ namespace FishSlop
             Instance = this;
         }
 
+        private void Start()
+        {
+            var ship = FindFirstObjectByType<ShipHealth>();
+            if (ship != null) SetHealth(ship.currentHealth, ship.maxHealth);
+        }
+
         public void SetHealth(float currentHealth, float maxHealth)
         {
             healthBar.maxValue = maxHealth;

@@ -6,16 +6,15 @@ namespace FishSlop
     {
         private Camera cam;
 
-        private void Awake()
-        {
-            cam = Camera.main;
-        }
-
         private void LateUpdate()
         {
-            if (cam == null) return;
+            if (cam == null)
+            {
+                cam = Camera.main;
+                if (cam == null) return;
+            }
 
-            transform.rotation = Quaternion.LookRotation(transform.position - cam.transform.position);
+            transform.rotation = cam.transform.rotation;
         }
     }
 }

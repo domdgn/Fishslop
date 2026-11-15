@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Avery/Scenes/UI/GameplayUI.unity
     guid: ac0405fa06e8b1a4e8589067a4f0b866
+  - enabled: 1
+    path: Assets/Avery/Scenes/UI/PauseUI.unity
+    guid: 3d1b8eb1bbe88504e815e276412abb3e
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
