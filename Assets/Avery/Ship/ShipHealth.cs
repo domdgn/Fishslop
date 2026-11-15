@@ -31,6 +31,12 @@ namespace FishSlop
             }
         }
 
+        [Server]
+        public void ResetHealth()
+        {
+            currentHealth = maxHealth;
+        }
+
         private void OnHealthChanged(float oldHealth, float newHealth)
         {
             CheckHealth();

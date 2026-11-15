@@ -121,5 +121,14 @@ namespace FishSlop
 
             Debug.Log($"Ship crashed into {collision.gameObject.name} / Impact speed: {impactSpeed} / Damage: {damageTaken}");
         }
+
+        [Server]
+        public void ResetShip()
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            steerInput = 0f;
+            shipHealth.ResetHealth();
+        }
     }
 }

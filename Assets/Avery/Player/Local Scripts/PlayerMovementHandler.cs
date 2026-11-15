@@ -258,5 +258,20 @@ namespace FishSlop
             rb.linearVelocity = new Vector3(dir.x * speed, vert * speed, dir.z * speed);
             jumpPressed = false;
         }
+
+        [TargetRpc]
+        public void TargetTeleport(NetworkConnectionToClient target, Vector3 position)
+        {
+            if (rb != null)
+            {
+                rb.position = position;
+                rb.linearVelocity = Vector3.zero;
+                rb.angularVelocity = Vector3.zero;
+            }
+            else
+            {
+                transform.position = position;
+            }
+        }
     }
 }
