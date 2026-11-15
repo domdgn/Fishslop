@@ -73,3 +73,11 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+*.psd
+# Paid assets - keep metadata, exclude actual files
+Assets/BOXOPHOBIC/**/*
+!Assets/BOXOPHOBIC/**/*.meta
+Assets/PinwheelStudio/**/*
+!Assets/PinwheelStudio/**/*.meta
+Assets/Low-Poly_Mega_Pack/**/*
+!Assets/Low-Poly_Mega_Pack/**/*.meta
