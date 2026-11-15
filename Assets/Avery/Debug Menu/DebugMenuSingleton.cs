@@ -11,6 +11,8 @@ public class DebugMenuSingleton : MonoBehaviour
     public static DebugMenuSingleton Instance { get; private set; }
     [SerializeField] private GameObject plankPrefab;
     private bool tinyMode;
+
+    public bool isOpen => UDebugPanel.IsVisible();
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -28,6 +30,7 @@ public class DebugMenuSingleton : MonoBehaviour
 
     public void ToggleDebugMenu()
     {
+        if (PauseMenu.IsPaused) return;
         UDebugPanel.Toggle();
     }
 

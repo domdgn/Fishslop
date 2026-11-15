@@ -1,5 +1,5 @@
-using UnityEngine;
 using Mirror;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace FishSlop
@@ -24,6 +24,9 @@ namespace FishSlop
         [SerializeField] private float flySpeed = 15f;
         public bool Flying { get; private set; }
         private Rigidbody rb;
+
+        public ShipLadder currentLadder;
+        [SerializeField] private float climbSpeed = 3f;
 
         private Vector2 moveInput;
         private bool isSprinting;
@@ -124,6 +127,20 @@ namespace FishSlop
             }
 
             FindShip();
+
+            if (currentLadder != null)
+            {
+                ship = currentLadder.ship;
+
+                rb.MoveRotation(Quaternion.Euler(0f, Yaw, 0f));
+
+                Vector3 climbVel = ship != null ? ShipCarryVelocity() : Vector3.zero;
+                climbVel.y += moveInput.y * climbSpeed;
+                rb.linearVelocity = climbVel;
+
+                jumpPressed = false;
+                return;
+            }
 
             bool grounded = IsGrounded();
 

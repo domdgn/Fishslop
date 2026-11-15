@@ -385,6 +385,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5f8a991e0e9fa4db0fc18cdfe7d385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishSlop.PlayerHUDLoader
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   uiSceneName: GameplayUI
   pauseSceneName: PauseUI
 --- !u!114 &3723848030789327102
@@ -424,6 +427,7 @@ MonoBehaviour:
   syncInterval: 0
   cameraPivot: {fileID: 7034602639271347265}
   headPivot: {fileID: 2869773368185156240}
+  body: {fileID: 6773425565766716365}
   lookSens: 0.2
   maxLookY: 80
   syncedPitch: 0
@@ -646,8 +650,8 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   hullCollider: {fileID: 332617359426002493}
-  restDepth: 0.15
-  damping: 0.1
+  restDepth: 0.3
+  damping: 0.4
   simulateOnClients: 1
   horizontalDrag: 2
 --- !u!114 &317612870201274454

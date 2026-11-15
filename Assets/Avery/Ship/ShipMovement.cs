@@ -11,6 +11,12 @@ namespace FishSlop
         public float acceleration = 2f;
         public float deceleration = 1f;
         public float steerSpeed = 20f;
+        public float maxWheelTurns = 1.5f;
+        public float wheelTurnRate = 0.5f;
+
+        [SyncVar] 
+        private float wheelTurns;
+        private Quaternion wheelStartRot;
 
         private Rigidbody rb;
         private SailHandler sailHandler;
@@ -38,6 +44,7 @@ namespace FishSlop
             if (shipWheel != null)
             {
                 rotatePoint = shipWheel.transform;
+                wheelStartRot = wheel.localRotation;
             }
         }
 
@@ -94,17 +101,20 @@ namespace FishSlop
             if (forwardSpeed > topSpeed) rb.linearVelocity -= forward * (forwardSpeed - topSpeed);
 
             float speedFactor = Mathf.Clamp01(flatVelocity.magnitude / topSpeed);
-            float angle = steerInput * steerSpeed * speedFactor * Time.fixedDeltaTime;
 
-            rb.AddTorque(Vector3.up * steerInput * steerSpeed * speedFactor, ForceMode.Acceleration);
+            wheelTurns = Mathf.Clamp(wheelTurns + steerInput * wheelTurnRate * Time.fixedDeltaTime, -maxWheelTurns, maxWheelTurns);
+
+            float wheelNormalized = wheelTurns / maxWheelTurns;
+
+            rb.AddTorque(Vector3.up * wheelNormalized * steerSpeed * speedFactor, ForceMode.Acceleration);
 
             syncedVelocity = rb.linearVelocity;
             syncedAngularVelocity = rb.angularVelocity;
-
-            if (wheel != null) // doesnt turn like a reeal ship yet with the locking or whatever but its okay
-            {
-                wheel.Rotate(Vector3.forward, steerInput * 100f * Time.fixedDeltaTime, Space.Self);
-            }
+        }
+        private void Update()
+        {
+            if (wheel == null) return;
+            wheel.localRotation = wheelStartRot * Quaternion.AngleAxis(wheelTurns * 360f, Vector3.forward);
         }
 
         [ServerCallback]
@@ -128,6 +138,8 @@ namespace FishSlop
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             steerInput = 0f;
+            wheelTurns = 0f;
+            if (sailHandler != null) sailHandler.isOpen = false;
             shipHealth.ResetHealth();
         }
     }

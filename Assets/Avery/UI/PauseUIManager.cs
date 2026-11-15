@@ -1,3 +1,4 @@
+using DebugPanel.Core;
 using Mirror;
 using Steamworks;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace FishSlop
 
         private void Update()
         {
-            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame) SetPaused(!IsPaused);
+            if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame && !UDebugPanel.IsVisible()) SetPaused(!IsPaused);
         }
 
         private void Start()
@@ -30,7 +31,6 @@ namespace FishSlop
         private void SetPaused(bool paused)
         {
             IsPaused = paused;
-            panel.SetActive(paused);
 
             var player = NetworkClient.localPlayer;
             if (player != null)
@@ -38,20 +38,27 @@ namespace FishSlop
                 var input = player.GetComponent<PlayerInput>();
                 var move = player.GetComponent<PlayerMovementHandler>();
 
+                if (UDebugPanel.IsVisible())
+                {
+                    return;
+                }
+
+                panel.SetActive(paused);
+                var look = player.GetComponent<PlayerLookHandler>();
+
                 if (paused)
                 {
+                    look.UnlockCursor();
                     previousMap = input.currentActionMap != null ? input.currentActionMap.name : "Player";
                     input.SwitchCurrentActionMap("UI");
                     move.ClearMovementInput();
                 }
                 else
                 {
+                    look.LockCursor();
                     input.SwitchCurrentActionMap(previousMap);
                 }
             }
-
-            Cursor.lockState = IsPaused ? CursorLockMode.None : CursorLockMode.Locked;
-            Cursor.visible = IsPaused;
         }
 
         public void LeaveGame()

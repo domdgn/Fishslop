@@ -7,6 +7,7 @@ namespace FishSlop
     {
         [SerializeField] private Transform cameraPivot;
         [SerializeField] public Transform headPivot;
+        [SerializeField] private MeshRenderer body;
 
         [SerializeField] private float lookSens = 0.2f;
         [SerializeField] private float maxLookY = 80f;
@@ -21,6 +22,7 @@ namespace FishSlop
             movement = GetComponent<PlayerMovementHandler>();
 
             if (cameraPivot != null) cameraPivot.gameObject.SetActive(false);
+            if (body != null) body.gameObject.SetActive(true);
         }
 
         public void EnableLook()
@@ -28,22 +30,33 @@ namespace FishSlop
             pitch = 0f;
 
             if (cameraPivot != null) cameraPivot.gameObject.SetActive(true);
+            if (body != null) body.gameObject.SetActive(false);
 
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            LockCursor();
         }
 
         public void DisableLook()
         {
             if (cameraPivot != null) cameraPivot.gameObject.SetActive(false);
 
+            UnlockCursor();
+        }
+
+        public void LockCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        public void UnlockCursor()
+        {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
         public void HandleLook(Vector2 input)
         {
-            if (!isOwned) return;
+            if (!isOwned || Cursor.lockState != CursorLockMode.Locked) return;
 
             movement.AddYaw(input.x * lookSens);
             pitch = Mathf.Clamp(pitch - input.y * lookSens, -maxLookY, maxLookY);
