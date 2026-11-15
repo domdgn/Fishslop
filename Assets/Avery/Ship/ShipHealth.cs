@@ -11,66 +11,96 @@ namespace FishSlop
 
         public float impactMulti = 3f;
 
+        [SyncVar(hook = nameof(OnDeadChanged))]
+        private bool isDead;
+
         [SerializeField] private GameObject collision;
+        [SerializeField] private GameObject[] hideOnDeath;
+        [SerializeField] private Behaviour[] disableOnDeath;
         [SerializeField] private GameObject plankPrefab;
         [SerializeField] private int plankCount = 20;
         [SerializeField] private float explosionSpeed = 8f;
+
+        private Vector3 startPos;
+        private Quaternion startRot;
+
+        private Rigidbody rb;
+        private void Awake() => rb = GetComponent<Rigidbody>();
+
+        public override void OnStartServer()
+        {
+            startPos = transform.position;
+            startRot = transform.rotation;
+        }
         public override void OnStartClient()
         {
             UpdateUI(currentHealth);
-        }
-
-        [Server]
-        private void CheckHealth()
-        {
-            if (currentHealth <= 0f)
-            {
-                ShipDie();
-            }
+            ApplyDead(isDead);
         }
 
         [Server]
         private void ShipDie()
         {
+            SpawnPlanks();
+
+            isDead = true;
+            ApplyDead(true);
+        }
+
+        [Server]
+        private void SpawnPlanks()
+        {
+            if (plankPrefab == null) return;
+
             for (int i = 0; i < plankCount; i++)
             {
                 Vector3 pos = transform.position + Random.insideUnitSphere * 2f;
                 GameObject plank = Instantiate(plankPrefab, pos, Random.rotation);
                 NetworkServer.Spawn(plank);
 
-                var prb = plank.GetComponent<Rigidbody>();
-                prb.linearVelocity = (pos - transform.position).normalized * explosionSpeed + Vector3.up * 4f;
-                prb.angularVelocity = Random.onUnitSphere * 5f;
+                if (plank.TryGetComponent(out Rigidbody prb))
+                {
+                    prb.linearVelocity = (pos - transform.position).normalized * explosionSpeed + Vector3.up * 4f;
+                    prb.angularVelocity = Random.onUnitSphere * 5f;
+                }
             }
-
-            collision.SetActive(false);
-            RpcHide();
-            gameObject.SetActive(false);
         }
-
-        [ClientRpc]
-        private void RpcHide()
+        private void OnDeadChanged(bool oldValue, bool newValue)
         {
-            if (isServer) return;
-            collision.SetActive(false);
-            gameObject.SetActive(false);
+            ApplyDead(newValue);
         }
-
-        [ClientRpc]
-        private void RpcShow()
+        private void ApplyDead(bool dead)
         {
-            if (isServer) return;
-            collision.SetActive(true);
-            gameObject.SetActive(true);
+            if (collision != null) collision.SetActive(!dead);
+
+            foreach (var go in hideOnDeath) if (go != null) go.SetActive(!dead);
+
+            foreach (var b in disableOnDeath) if (b != null) b.enabled = !dead;
+
+            if (isServer && rb != null)
+            {
+                if (dead)
+                {
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    rb.isKinematic = true;
+                }
+                else
+                {
+                    rb.isKinematic = false;
+                }
+            }
         }
 
         [Server]
         public void TakeDamage(float damage)
         {
-            currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealth);
+            if (isDead) return;
 
+            currentHealth = Mathf.Clamp(currentHealth - damage, 0f, maxHealth);
             if (isClient) UpdateUI(currentHealth);
-            CheckHealth();
+
+            if (currentHealth <= 0f) ShipDie();
         }
 
         [Server]
@@ -78,7 +108,25 @@ namespace FishSlop
         {
             currentHealth = maxHealth;
             if (isClient) UpdateUI(currentHealth);
-            RpcShow();
+
+            if (isDead)
+            {
+                if (rb != null)
+                {
+                    rb.isKinematic = true;
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
+                    rb.position = startPos;
+                    rb.rotation = startRot;
+                }
+                transform.SetPositionAndRotation(startPos, startRot);
+                Physics.SyncTransforms();
+
+                if (TryGetComponent(out NetworkTransformBase nt)) nt.RpcTeleport(startPos, startRot);
+            }
+
+            isDead = false;
+            ApplyDead(false);
         }
         private void OnHealthChanged(float oldHealth, float newHealth)
         {

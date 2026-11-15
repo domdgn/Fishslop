@@ -1,9 +1,10 @@
+using Mirror;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace FishSlop
 {
-    public class PlayerHUDLoader : MonoBehaviour
+    public class PlayerHUDLoader : NetworkBehaviour
     {
         [SerializeField] private string uiSceneName = "GameplayUI";
         [SerializeField] private string pauseSceneName = "PauseUI";
@@ -18,7 +19,7 @@ namespace FishSlop
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
 
-        private void Start()
+        public override void OnStartLocalPlayer()
         {
             LoadUI();
         }

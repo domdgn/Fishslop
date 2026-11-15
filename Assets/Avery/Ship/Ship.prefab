@@ -257,9 +257,17 @@ MonoBehaviour:
   maxHealth: 100
   impactMulti: 3
   collision: {fileID: 0}
+  hideOnDeath:
+  - {fileID: 8183516842792920982}
+  - {fileID: 3596874347352122735}
+  - {fileID: 3085777827265125232}
+  disableOnDeath:
+  - {fileID: 7622984941897030125}
+  - {fileID: 8312274799374669218}
+  - {fileID: 7063092716098877424}
   plankPrefab: {fileID: 7247235580517710652, guid: 1ffc30e2f25e5d34db3fca1ce943c217, type: 3}
-  plankCount: 20
-  explosionSpeed: 8
+  plankCount: 25
+  explosionSpeed: 6
 --- !u!1 &3085777827265125232
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +886,11 @@ MonoBehaviour:
 --- !u!4 &4114164399783661769 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8591011077067065845, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
+  m_PrefabInstance: {fileID: 5629804889118775612}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8183516842792920982 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4589348899192815274, guid: 10b21c3f32b1ae2439fa5514439520c2, type: 3}
   m_PrefabInstance: {fileID: 5629804889118775612}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8625448388094004216 stripped
