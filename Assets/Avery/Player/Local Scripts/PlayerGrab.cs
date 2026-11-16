@@ -9,7 +9,7 @@ namespace FishSlop
         [SerializeField] private Vector3 holdOffset = new Vector3(0f, 1.2f, 1.5f);
         private float reach;
         private PlayerInteraction interaction;
-        private Grabbable held;
+        public Grabbable held;
 
         private void Awake()
         {
@@ -39,7 +39,7 @@ namespace FishSlop
         }
 
         [Command]
-        private void CmdDrop() => Drop();
+        public void CmdDrop() => Drop();
 
         [ServerCallback]
         private void FixedUpdate()

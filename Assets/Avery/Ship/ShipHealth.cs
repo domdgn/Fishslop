@@ -104,6 +104,16 @@ namespace FishSlop
         }
 
         [Server]
+        public void Repair(float amount)
+        {
+            if (isDead) return;
+
+            currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
+
+            if (isClient) UpdateUI(currentHealth);
+        }
+
+        [Server]
         public void ResetHealth()
         {
             currentHealth = maxHealth;

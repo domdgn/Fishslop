@@ -24,13 +24,14 @@ namespace FishSlop
         {
             if (Instance != null && Instance != this)
             {
+                Instance.panelSwapper = panelSwapper;
+                Instance.hostButton = hostButton;
                 Destroy(this.gameObject);
+                return;
             }
-            else
-            {
-                DontDestroyOnLoad(this.gameObject);
-                Instance = this;
-            }
+
+            DontDestroyOnLoad(this.gameObject);
+            Instance = this;
         }
 
         private void Start()
@@ -162,8 +163,8 @@ namespace FishSlop
                 Debug.LogWarning("Not in a lobby to leave.");
             }
 
-            if (NetworkServer.active && NetworkClient.isConnected) networkManager.StopHost();
-            else if (NetworkClient.isConnected) networkManager.StopClient();
+            if (NetworkServer.active && NetworkClient.active) networkManager.StopHost();
+            else if (NetworkClient.active) networkManager.StopClient();
             else if (NetworkServer.active) networkManager.StopServer();
 
             if (panelSwapper != null) panelSwapper.gameObject.SetActive(true);

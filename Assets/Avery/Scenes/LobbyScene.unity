@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &99193963 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6905128262090071111, guid: 1ccc5941f73bd4f4fb671e9707c92b1d, type: 3}
-  m_PrefabInstance: {fileID: 4235681480570675398}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5da60ad6e78b69247abf0f0b8feedbc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FishSlop.SteamLobby
 --- !u!114 &302551727 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2295017373423490102, guid: c7648b537e759a547814033a56c02f22, type: 3}
@@ -683,13 +672,45 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1379337703}
     - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 99193963}
+      objectReference: {fileID: 1379337706}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SwapUIPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnBackClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: FishSlop.PanelSwapper, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FishSlop.LobbyUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
+      value: Main
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420640428894614952, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_StringArgument
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7105208261307562355, guid: c7648b537e759a547814033a56c02f22, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -697,7 +718,15 @@ PrefabInstance:
     - target: {fileID: 7105208261307562355, guid: c7648b537e759a547814033a56c02f22, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 99193963}
+      objectReference: {fileID: 1379337706}
+    - target: {fileID: 7105208261307562355, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnHostClicked
+      objectReference: {fileID: 0}
+    - target: {fileID: 7105208261307562355, guid: c7648b537e759a547814033a56c02f22, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: FishSlop.LobbyUIManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

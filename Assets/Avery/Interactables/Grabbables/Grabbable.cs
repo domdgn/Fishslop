@@ -8,6 +8,7 @@ namespace FishSlop
         [SerializeField] private float followStrength = 15f;
         [SerializeField] private float maxSpeed = 12f;
         [SerializeField] private float holdDistance = 1.5f;
+        [SerializeField] private Vector3 rotateOffset = Vector3.zero;
 
         [SyncVar(hook = nameof(OnHolderChanged))]
         private NetworkIdentity holder;
@@ -49,7 +50,7 @@ namespace FishSlop
 
             float pitch = look != null ? look.syncedPitch : 0f;
 
-            Quaternion rotation = Quaternion.Euler(pitch, holder.transform.eulerAngles.y, 0f );
+            Quaternion rotation = Quaternion.Euler(pitch, holder.transform.eulerAngles.y, 0f);
 
             Vector3 desiredPosition = pivot + rotation * Vector3.forward * holdDistance;
 
@@ -57,7 +58,7 @@ namespace FishSlop
             rb.linearVelocity = Vector3.ClampMagnitude(vel, maxSpeed);
 
             rb.angularVelocity = Vector3.zero;
-            rb.rotation = rotation;
+            rb.rotation = rotation * Quaternion.Euler(rotateOffset);
         }
 
         private void OnHolderChanged(NetworkIdentity oldHolder, NetworkIdentity newHolder)

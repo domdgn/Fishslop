@@ -11,6 +11,7 @@ namespace FishSlop
         [SerializeField] private PlayerLookHandler look;
         [SerializeField] private PlayerInteraction interaction;
         [SerializeField] private PlayerSteerShip steering;
+        [SerializeField] private PLAYTEST_PlayerRepairShip repair;
         [SerializeField] private GameObject boop;
 
         private PlayerInput playerInput;
@@ -24,6 +25,7 @@ namespace FishSlop
             if (interaction == null) interaction = GetComponent<PlayerInteraction>();
             if (steering == null) steering = GetComponent<PlayerSteerShip>();
             if (boop != null) boop.SetActive(true);
+            if (repair == null) repair = GetComponent<PLAYTEST_PlayerRepairShip>();
 
             foreach (var actionMap in playerInput.actions.actionMaps)
             {
@@ -41,6 +43,7 @@ namespace FishSlop
             if (movement != null) movement.enabled = true;
             if (steering != null) steering.enabled = true;
             if (interaction != null) interaction.enabled = true;
+            if (repair != null) repair.enabled = true;
             if (boop != null) boop.SetActive(false);
 
             playerInput.actions.FindActionMap("Player").Enable();
@@ -97,7 +100,13 @@ namespace FishSlop
         public void OnInteract(InputValue value)
         {
             if (!isOwned || !value.isPressed) return;
-            Debug.Log("Use Input called");
+            
+            if (repair.canAttemptRepair)
+            {
+                repair.AttemptRepair();
+                return;
+            }
+
             if (interaction != null) interaction.DoInteract();
         }
 

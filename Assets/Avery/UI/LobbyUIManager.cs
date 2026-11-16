@@ -132,5 +132,9 @@ namespace FishSlop
 
             Application.Quit();
         }
+
+        public void OnHostClicked() => SteamLobby.Instance?.HostLobby();
+        public void OnBackClicked() => SteamLobby.Instance?.LeaveLobby();
+
     }
 }

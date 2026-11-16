@@ -33,7 +33,7 @@ namespace FishSlop
         private bool jumpPressed;
         public float Yaw { get; private set; }
 
-        private ShipMovement ship;
+        public ShipMovement ship { get; private set; }
         private Rigidbody shipRb;
         private float lastOnShipTime;
         private Vector3 lastShipPosition;

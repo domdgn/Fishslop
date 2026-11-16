@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 7815102404966526368}
   - component: {fileID: 4393133478022845519}
   - component: {fileID: 1960500145427179304}
+  - component: {fileID: 1586059768890652341}
   m_Layer: 11
   m_Name: Prop_GrabbablePlank
   m_TagString: Untagged
@@ -34,7 +35,7 @@ Transform:
   m_GameObject: {fileID: 7247235580517710652}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.37, y: -1.64, z: 22.35}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.333, y: 0.05, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -248,6 +249,7 @@ MonoBehaviour:
   followStrength: 15
   maxSpeed: 12
   holdDistance: 1.5
+  rotateOffset: {x: 0, y: 90, z: 90}
 --- !u!114 &1960500145427179304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,3 +270,16 @@ MonoBehaviour:
   damping: 1
   simulateOnClients: 0
   horizontalDrag: 2
+--- !u!114 &1586059768890652341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7247235580517710652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25c5b7574b8694d428dc187ff19315f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PLAYTEST_RepairingObject
+  repairAmount: 20
