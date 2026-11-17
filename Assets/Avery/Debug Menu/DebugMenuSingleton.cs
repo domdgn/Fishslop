@@ -11,6 +11,9 @@ public class DebugMenuSingleton : MonoBehaviour
     public static DebugMenuSingleton Instance { get; private set; }
     [SerializeField] private GameObject plankPrefab;
     private bool tinyMode;
+    private bool bigMode;
+
+    private float speedMultiplier;
 
     public bool isOpen => UDebugPanel.IsVisible();
     private void Awake()
@@ -58,6 +61,46 @@ public class DebugMenuSingleton : MonoBehaviour
 
             var move = player.GetComponent<PlayerMovementHandler>();
             if (move != null) move.SetFly(!move.Flying);
+        });
+
+        section.AddButton("Toggle Tiny Mode", () =>
+        {
+            var player = NetworkClient.localPlayer;
+            if (player == null) return;
+
+            tinyMode = !tinyMode;
+            if (bigMode && tinyMode) bigMode = false;
+            player.transform.localScale = tinyMode ? Vector3.one * 0.3f : Vector3.one;
+            player.GetComponent<Rigidbody>().mass = tinyMode ? 0.6f : 2f;
+        });
+
+        section.AddButton("Toggle BIG Mode", () =>
+        {
+            var player = NetworkClient.localPlayer;
+            if (player == null) return;
+
+            bigMode = !bigMode;
+            if (tinyMode && bigMode) tinyMode = false;
+            player.transform.localScale = bigMode ? Vector3.one * 1.5f : Vector3.one;
+            player.GetComponent<Rigidbody>().mass = bigMode ? 2.6f : 2f;
+        });
+
+        section.AddFloatSelector("Player Speed Multi", 0.5f, value => speedMultiplier = value, () => speedMultiplier);
+
+        section.AddButton("Apply Speed Multi", () =>
+        {
+            var player = NetworkClient.localPlayer;
+            if (player == null) return;
+            var move = player.GetComponent<PlayerMovementHandler>();
+            if (move != null) move.speedMulti = speedMultiplier;
+        });
+
+        section.AddButton("Reset Speed Multi", () =>
+        {
+            var player = NetworkClient.localPlayer;
+            if (player == null) return;
+            var move = player.GetComponent<PlayerMovementHandler>();
+            if (move != null) move.speedMulti = 1f;
         });
     }
 
@@ -113,15 +156,6 @@ public class DebugMenuSingleton : MonoBehaviour
                 rb.AddForce(Vector3.up * 50000f, ForceMode.Impulse);
                 break;
             }
-        });
-
-        section.AddButton("Toggle Tiny Mode", () =>
-        {
-            var player = NetworkClient.localPlayer;
-            if (player == null) return;
-
-            tinyMode = !tinyMode;
-            player.transform.localScale = tinyMode ? Vector3.one * 0.3f : Vector3.one;
         });
 
         section.AddButton("Bring Everyone to Host", () =>

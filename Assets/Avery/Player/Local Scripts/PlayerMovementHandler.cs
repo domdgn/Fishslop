@@ -39,6 +39,8 @@ namespace FishSlop
         private Vector3 lastShipPosition;
         private Quaternion lastShipRotation;
         private Vector3 groundNormal = Vector3.up;
+
+        public float speedMulti = 1f;
         private void Awake()
         {
             rb = GetComponent<Rigidbody>();
@@ -148,7 +150,7 @@ namespace FishSlop
 
             Vector3 dir = Quaternion.Euler(0f, Yaw, 0f) * new Vector3(moveInput.x, 0f, moveInput.y);
             if (grounded) dir = Vector3.ProjectOnPlane(dir, groundNormal).normalized * dir.magnitude;
-            Vector3 velocity = dir * (isSprinting ? sprintSpeed : moveSpeed);
+            Vector3 velocity = dir * (isSprinting ? sprintSpeed * speedMulti : moveSpeed * speedMulti);
 
             velocity = BlockWalls(velocity);
 
